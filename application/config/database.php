@@ -62,9 +62,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 switch($_SERVER["HTTP_HOST"])
 {
-	case "chinavasion.info":	$active_group = 'production';
+	case "chinavasionparse.info":	$active_group = 'production';
 								break;
-	case "chinavasion.loc":		$active_group = 'development';
+	case "chinavasionparse.loc":		$active_group = 'development';
 								break;
 	default:					$active_group = 'development';
 								break;
@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['development'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql:host=localhost;dbname=chinavasion_db',
+	'hostname' => 'mysql:host=localhost;dbname=chinavasionparse_db',
 	'username' => 'root',
 	'password' => 'root',
-	'database' => 'chinavasion_db',
+	'database' => 'chinavasionparse_db',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -97,10 +97,10 @@ $db['development'] = array(
 
 $db['production'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql:host=localhost;dbname=chinavasion',
+	'hostname' => 'mysql:host=localhost;dbname=chinavasionparse_db',
 	'username' => 'root',
 	'password' => 'root',
-	'database' => 'chinavasion',
+	'database' => 'chinavasionparse_db',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

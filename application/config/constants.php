@@ -84,3 +84,13 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+/*
+|--------------------------------------------------------------------------
+| custom: Chinavasion.com API
+|--------------------------------------------------------------------------
+*/
+define('CHINAVASION_APIKEY', 'lEKi8_7hpnu-F8ZskqDBV90bk2rq7VQxXRleV-GiCQk.');
+define('CHINAVASION_APIURL_CATEGORY', 'https://secure.chinavasion.com/api/getCategory.php');
+define('CHINAVASION_APIURL_PRODUCTLIST', 'https://secure.chinavasion.com/api/getProductList.php');

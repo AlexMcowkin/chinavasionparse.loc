@@ -19,11 +19,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 switch($_SERVER["HTTP_HOST"])
 {
-	case "chinavasion.info":	$config['base_url'] = 'http://chinavasion.info';
+	case "chinavasionparse.info":	$config['base_url'] = 'http://chinavasionparse.info';
 							break;
-	case "chinavasion.loc":	$config['base_url'] = 'http://chinavasion.loc';
+	case "chinavasionparse.loc":	$config['base_url'] = 'http://chinavasionparse.loc';
 							break;
-	default:				$config['base_url'] = 'http://chinavasion.loc';
+	default:				$config['base_url'] = 'http://chinavasionparse.loc';
 							break;
  }
 

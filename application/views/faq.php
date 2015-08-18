@@ -3,15 +3,15 @@
     
     <div class="row">
       <div class="col-md-12">
-        <h4 class="page-head-line">Parse Product URL</h4>
+        <h4 class="page-head-line">FAQ</h4>
       </div>
     </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <?=$result;?>
+    <div class="row">
+      <div class="col-md-12">
+          <p>How to use this parcer...</p>
+      </div>
     </div>
-  </div>
 
   </div>
 </div> 

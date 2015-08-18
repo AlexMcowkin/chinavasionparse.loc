@@ -11,7 +11,7 @@
       <div class="col-md-12">
       <?php echo form_open('chinavasioncontroller/parseimg'); ?>
             <div class="form-group">
-                <label for="title">Product Link</label>
+                <label for="title">Product Link:</label>
                 <input type="text" name="produckulr" required placeholder="Product Link" class="form-control"/>
             </div>            
             <div class="form-group">

@@ -1,0 +1,15 @@
+AddDefaultCharset UTF-8
+
+Options -Indexes 
+
+RewriteEngine On 
+
+RewriteRule ^index.php$ / [QSA,R]
+
+#RewriteCond %{HTTP_HOST} ^makovkin\.info$ [NC] 
+#RewriteRule ^(.*)$ "http\:\/\/www\.makovkin\.info" [L,R=301]
+
+#RewriteCond %{HTTP_HOST} ^www\.makovkin\.info$ [NC]
+#RewriteRule ^(.*)$ http://makovkin.info/$1 [R=301,L]
+
+ErrorDocument 404 /

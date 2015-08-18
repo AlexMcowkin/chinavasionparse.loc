@@ -14,90 +14,200 @@ class Chinavasioncontroller extends CI_Controller
 	// }
 	public function index()
 	{
-		$this->load->view('header');
+		$data['metatitle'] = "Chinavasion Parce";
+		$data['metadescription'] = "Chinavasion Parce Site for Elite-Electronix.com";
+
+		$this->load->view('header', $data);
 		$this->load->view('topmenu');
-		$this->load->view('content');
+		$this->load->view('startpage');
 		$this->load->view('footer');
 	}
+
 	public function errorpage()
 	{
-		$this->load->view('header');
+		
+		$data['metadescription'] = $data['metatitle'] = "Error Page";
+
+		$this->load->view('header', $data);
 		$this->load->view('topmenu');
 		$this->load->view('404');
 		$this->load->view('footer');
 	}
+
+	public function faq()
+	{
+		$data['metatitle'] = "FAQ";
+		$data['metadescription'] = "ho to use this parcer";
+
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('faq');
+		$this->load->view('footer');
+	}
+
+	public function parcecategories()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get chinavasion categories";
+
+		$data['resultparce'] = $this->Functionmodel->parceCategories();
+		if($data['resultparce'] === TRUE)
+		{
+			$data['resultlist'] = $this->Functionmodel->listCategories();
+		}
+		
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('categories', $data);
+		$this->load->view('footer');
+	}
+
+	public function listcategories()
+	{
+		$data['metadescription'] = $data['metatitle'] = "List chinavasion categories";
+
+		if($data['resultparce'] = TRUE)
+		{
+			$data['resultlist'] = $this->Functionmodel->listCategories();
+		}
+		
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('categories', $data);
+		$this->load->view('footer');
+	}
+
+	public function parcecategoryproducts()
+	{
+		$catid = $this->input->post('catid');
+		$data['result'] = $this->Functionmodel->parceCategoryProducts($catid);
+		$this->load->view('ajaxsimpleresult',$data);
+	}
+
+	public function parcenewproducts()
+	{
+ 		$data['metadescription'] = $data['metatitle'] = "New Products parce";
+		$data['newproductsurl'] = "http://rss.chinavasion.com/new_products.xml";
+		$data['result'] = $this->Functionmodel->parceNewProductsXml($data['newproductsurl']);
+
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('newproduct_parce', $data);
+		$this->load->view('footer');	
+	}
 	
-	public function downloadxml()
+	public function getnewproducts()
 	{
- 		$data['result'] = $this->Functionmodel->downloadXml();
+ 		$data['metadescription'] = $data['metatitle'] = "New Products result page";
+		$data['result'] = $this->Functionmodel->getNewProducts();
 
-		$this->load->view('header');
+		$this->load->view('header', $data);
 		$this->load->view('topmenu');
-		$this->load->view('downloadxml', $data);
+		$this->load->view('newproduct_result', $data);
 		$this->load->view('footer');	
 	}
-
-	public function parsexml()
+	
+	public function importcsv()
 	{
- 		$data['result'] = $this->Functionmodel->parseXml();
+ 		$data['metadescription'] = $data['metatitle'] = "Import Our Products";
+		$data['result'] = $this->Functionmodel->setOurProducts();
 
-		$this->load->view('header');
-		$this->load->view('topmenu');
-		$this->load->view('parsexml', $data);
-		$this->load->view('footer');	
-	}
-
-
-	public function results($date='')
-	{
-		if (empty($date))
-		{
-			$data['result'] = $this->Functionmodel->parseResultsGetDateList();
-			$data['type'] = 'onlydates';
-
-			$this->load->view('header');
-			$this->load->view('topmenu');
-			$this->load->view('resultsxml', $data);
-			$this->load->view('footer');	
-		}
-		else
-		{
-			$data['result'] = $this->Functionmodel->parseResultsLincs($date);
-			$data['type'] = 'onlylinks';
-
-			$this->load->view('header');
-			$this->load->view('topmenu');
-			$this->load->view('resultsxml', $data);
-			$this->load->view('footer');	
-		}
-	}
-
-	public function deletexmls()
-	{
-        $this->Functionmodel->deleteXmls();
-        redirect('index', 'refresh');
-	}
-
-	public function parseimg()
-	{
 		if(isset($_POST['submit']))
 		{
-			$data['result'] = $this->Functionmodel->parseImages($this->input->post('produckulr'));
+			$data['result'] = $this->Functionmodel->importCsv($this->input->post('filecsv'));
 
-			$this->load->view('header');
+			$this->load->view('header', $data);
 			$this->load->view('topmenu');
-			$this->load->view('parseimg', $data);
+			$this->load->view('ourproduct_result', $data);
 			$this->load->view('footer');
 		}
 		else
 		{
-			$this->load->view('header');
+			$this->load->view('header', $data);
 			$this->load->view('topmenu');
-			$this->load->view('formimg');
+			$this->load->view('ourproduct_form');
+			$this->load->view('footer');				
+		}	
+	}
+	
+
+
+	// public function downloadxml()
+	// {
+ // 		$data['metatitle'] = "Error Page";
+	// 	$data['metadescription'] = "Error Page";
+ // 		$data['result'] = $this->Functionmodel->downloadXml();
+
+	// 	$this->load->view('header', $data);
+	// 	$this->load->view('topmenu');
+	// 	$this->load->view('downloadxml', $data);
+	// 	$this->load->view('footer');	
+	// }
+
+	// public function parsexml()
+	// {
+ // 		$data['result'] = $this->Functionmodel->parseXml();
+
+	// 	$this->load->view('header');
+	// 	$this->load->view('topmenu');
+	// 	$this->load->view('parsexml', $data);
+	// 	$this->load->view('footer');	
+	// }
+
+
+	// public function results($date='')
+	// {
+	// 	$data['metatitle'] = "XXXXX";
+	// 	$data['metadescription'] = "XXXXXXXXXx";
+
+	// 	if (empty($date))
+	// 	{
+	// 		$data['result'] = $this->Functionmodel->parseResultsGetDateList();
+	// 		$data['type'] = 'onlydates';
+
+	// 		$this->load->view('header', $data);
+	// 		$this->load->view('topmenu');
+	// 		$this->load->view('resultsxml', $data);
+	// 		$this->load->view('footer');	
+	// 	}
+	// 	else
+	// 	{
+	// 		$data['result'] = $this->Functionmodel->parseResultsLincs($date);
+	// 		$data['type'] = 'onlylinks';
+
+	// 		$this->load->view('header', $data);
+	// 		$this->load->view('topmenu');
+	// 		$this->load->view('resultsxml', $data);
+	// 		$this->load->view('footer');	
+	// 	}
+	// }
+
+	// public function deletexmls()
+	// {
+ //        $this->Functionmodel->deleteXmls();
+ //        redirect('index', 'refresh');
+	// }
+
+	public function parseimg()
+	{
+		$data['metatitle'] = "Parce additional images";
+		$data['metadescription'] = "get gallery images";
+
+		if(isset($_POST['submit']))
+		{
+			$data['result'] = $this->Functionmodel->parseImages($this->input->post('produckulr'));
+
+			$this->load->view('header', $data);
+			$this->load->view('topmenu');
+			$this->load->view('gallery_result', $data);
+			$this->load->view('footer');
+		}
+		else
+		{
+			$this->load->view('header', $data);
+			$this->load->view('topmenu');
+			$this->load->view('gallery_addlink');
 			$this->load->view('footer');				
 		}
-		
 	}
-
 }
 ?>

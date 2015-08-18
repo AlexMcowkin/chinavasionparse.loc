@@ -168,16 +168,27 @@ header {
     text-transform: uppercase;
 }
 
+#menu-top a:hover, #menu-top a:focus
+{
+    color:#111;
+}
+
 .menu-top-active {
     background-color: #C36464;
 }
 
-.menu-section .nav > li > a:hover,.menu-section .nav > li > a:focus {
+.menu-section .nav > li > a:hover,. menu-section .nav > li > a:focus {
     background-color: #F0677C!important;
 }
 
 .menu-section .dropdown-menu > li > a:hover,.menu-section .dropdown-menu > li > a:focus {
     background-color: #F0677C!important;
+    color: #fff !important;
+}
+
+.dropdown-menu > li > a
+{
+    color: #333 !important;
 }
 
 .navbar-inverse {

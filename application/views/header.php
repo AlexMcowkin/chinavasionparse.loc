@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="Makovkin Alexandr" />
+    <meta name="description" content="<?=$metadescription;?>" />
+    <meta name="keywords" content="elite-electronix.com, chinavasio.com" />
+    <meta name="author" content="Маковкин Александр" />
+    <meta name="contact" content="info@makovkin.info" />
     <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
-    <title>chinavasion Parse Script</title>
+    <title><?=$metatitle;?></title>
     <link href="<?=base_url();?>css/bootstrap.css" rel="stylesheet" />
     <link href="<?=base_url();?>css/font-awesome.css" rel="stylesheet" />
     <link href="<?=base_url();?>css/style.css" rel="stylesheet" />
@@ -18,18 +20,3 @@
     <![endif]-->
 </head>
 <body>
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <strong>Email: </strong>mail@makovkin.info
-            </div>
-            <div class="col-md-4">
-                <strong>Support 24/7: </strong>(+373)78-10-10-60
-            </div>
-            <div class="col-md-4">
-                <a href="<?=base_url();?>logout" class="btn btn-warning"><strong>LOGOUT</strong></a>
-            </div>
-        </div>
-    </div>
-</header>
