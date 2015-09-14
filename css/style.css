@@ -95,8 +95,8 @@ header {
 }
 
 .navbar-brand {
-    width: 250px;
-    padding-top: 30px;
+    width: 200px;
+    color: #fff !important;
 }
 
 /* USER SETTINGS DIV */

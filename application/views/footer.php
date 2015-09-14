@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                &copy; 2013-<?=date('Y');?> <a href="http://makovkin.info">makovkin.info</a>
+                &copy; 2013-<?=date('Y');?> <a href="http://makovkin.info/">makovkin.info</a>
             </div>
             <div class="col-md-6 text-right">
                 <script type="text/javascript">

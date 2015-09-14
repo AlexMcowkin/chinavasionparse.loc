@@ -15,7 +15,7 @@ class Chinavasioncontroller extends CI_Controller
 	public function index()
 	{
 		$data['metatitle'] = "Chinavasion Parce";
-		$data['metadescription'] = "Chinavasion Parce Site for Elite-Electronix.com";
+		$data['metadescription'] = "Chinavasion Parce Site";
 
 		$this->load->view('header', $data);
 		$this->load->view('topmenu');
@@ -37,7 +37,7 @@ class Chinavasioncontroller extends CI_Controller
 	public function faq()
 	{
 		$data['metatitle'] = "FAQ";
-		$data['metadescription'] = "ho to use this parcer";
+		$data['metadescription'] = "How to use this parcer";
 
 		$this->load->view('header', $data);
 		$this->load->view('topmenu');
@@ -47,7 +47,7 @@ class Chinavasioncontroller extends CI_Controller
 
 	public function parcecategories()
 	{
-		$data['metadescription'] = $data['metatitle'] = "Get chinavasion categories";
+		$data['metadescription'] = $data['metatitle'] = "Get chinavasion's categories";
 
 		$data['resultparce'] = $this->Functionmodel->parceCategories();
 		if($data['resultparce'] === TRUE)
@@ -63,7 +63,7 @@ class Chinavasioncontroller extends CI_Controller
 
 	public function listcategories()
 	{
-		$data['metadescription'] = $data['metatitle'] = "List chinavasion categories";
+		$data['metadescription'] = $data['metatitle'] = "List chinavasion's categories";
 
 		if($data['resultparce'] = TRUE)
 		{

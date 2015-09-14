@@ -9,7 +9,8 @@
 
   <div class="row">
     <div class="col-md-12">
-      <?=$result;?>
+      <h2>DONE!</h2>
+      <strong>Gallery Name & Seo URL:</strong><br /><?=$result;?>
     </div>
   </div>
 

@@ -31,15 +31,18 @@
             </thead>
             <tbody>
             <?php foreach ($resultlist as $value):?>
-              <tr>
+              <tr id="trcatid_<?=$value->id;?>">
                 <td><?=$value->id;?></td>
                 <td><?=$value->name;?></td>
                 <td><a href="<?=$value->url?>" target="_blank" title="click here"><?=$value->url?></a></td>
-
-                <?php if($value->parce_status == 0):?>
-                  <td><a id="parcebutton" class="btn btn-warning btn-xs" href="#parceit" role="button" rel="<?=$value->id;?>" title="parce it">parce it</a><img src="img/preloader-small.gif"  /></td>
+                <?php if($value->parce_status == '0'):?>
+                  <td id="tdcatid_<?=$value->id;?>">
+                    <a id="parcebutton" class="btn btn-warning btn-xs" href="#parceit" role="button" rel="<?=$value->id;?>" title="parce it">parce it</a>
+                    <img src="img/preloader-small.gif" id="preloader_button"/></td>
                 <?php else:?>
-                  <td><span class="text-success">PARCED</span></td>
+                  <td>
+                    <span class="text-success">PARCED</span>
+                  </td>
                 <?php endif;?>
               </tr>
             <?php endforeach;?>

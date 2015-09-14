@@ -6,9 +6,6 @@ class Functionmodel extends CI_Model
 /**************************************************************************/   
     function parceCategories()
     {
-        // $apiKey = "lEKi8_7hpnu-F8ZskqDBV90bk2rq7VQxXRleV-GiCQk.";
-        // $apiUrl = "https://secure.chinavasion.com/api/getCategory.php";
-
         $arrayData = array('key'=>CHINAVASION_APIKEY, 'include_content'=>"0");
         $jsonRequest = json_encode($arrayData);
 
@@ -39,15 +36,17 @@ class Functionmodel extends CI_Model
             $this->db->empty_table('products');
             $this->db->empty_table('categories');
 
+            $i=0;
             foreach ($result['categories'] as $value)
             {
                 $data = array(
+                    'id'=>$i++,
                     'name' => $value['name'],
                     'url' => $value['url']
                 );
                 $this->db->insert('categories', $data);
             }
-
+            
             return true;
         }
     }
@@ -64,14 +63,14 @@ class Functionmodel extends CI_Model
 /**************************************************************************/
 /************************    PRODUCTS    **********************************/
 /**************************************************************************/
-    function parceCategoryProducts($id)
+    function parceCategoryProducts($id, $start = 0)
     {
         $query = $this->db->query("SELECT name FROM categories WHERE id = $id LIMIT 1");
         $categoryName = $query->row(0)->name;
 
         $this->db->delete('products', array('category_name' => $categoryName));
 
-        $arrayData = array('key'=>CHINAVASION_APIKEY, 'categories'=>array($categoryName));
+        $arrayData = array('key'=>CHINAVASION_APIKEY, 'categories'=>array($categoryName), 'pagination'=>array('start'=>$start, 'count'=>50));
         $jsonRequest = json_encode($arrayData);
 
         $curl = curl_init(CHINAVASION_APIURL_PRODUCTLIST);
@@ -100,7 +99,7 @@ class Functionmodel extends CI_Model
         {
             foreach ($result['products'] as $value)
             {
-                $data = array(
+                $data[] = array(
                     'model_code' => $value['model_code'],
                     'ean' => $value['ean'],
                     'full_product_name' => $value['full_product_name'],
@@ -110,10 +109,22 @@ class Functionmodel extends CI_Model
                     'status' => $value['status'],
                     'continuity' => $value['continuity']
                 );
-                $this->db->insert('products', $data);
+                // $this->db->insert('products', $data);
             }
 
-            return true;
+            $this->db->insert_batch('products', $data);
+            empty($data);
+
+            if($result['pagination']['total'] > $start)
+            {
+                $start = $start + 50;
+                $this->parceCategoryProducts($id, $start);
+            }
+            else
+            {
+                $this->db->update('categories', array('parce_status'=>1), "id=".$id);
+                return true;
+            }
         }
     }
 
@@ -160,9 +171,8 @@ class Functionmodel extends CI_Model
                 $query2 = $this->db->query("SELECT id FROM ourproducts WHERE sku = '{$row->sku}' LIMIT 1");
                 if($query2->num_rows() == 0)
                 {
-                    $newProductsArray[] = $row->link;
+                    $newProductsArray[] = array($row->link, $row->sku);
                 }
-
             }
             return $newProductsArray;
         }
@@ -282,10 +292,9 @@ class Functionmodel extends CI_Model
     function parseImages($imgurl)
     {
         include('php/simple_html_dom.php');
-        define('SAVE_PATH','C:\Users\phpist\Desktop');
-        if (!is_dir(SAVE_PATH)) {return 'setup path to desctop';}
+        if (!is_dir(SAVE_IMAGES_PATH)) {return 'PLEASE: setup SAVE_IMAGES_PATH path to desctop in application\config\constants.php';}
 
-        $link = trim($imgurl);
+        $link = str_replace("http://", "https://", trim($imgurl));
         $lin_arr = array();
         $kk = 0;
         $q = 1;
@@ -340,7 +349,7 @@ class Functionmodel extends CI_Model
             if (substr($title, -1) == '-') $title = substr($title, 0, -1 );
         }
 
-        $filename = SAVE_PATH.'\gallery\\'.$title; // !!! personally data
+        $filename = SAVE_IMAGES_PATH.'\gallery\\'.$title; // !!! personally data
         // если есть файл, то пропускаем повторное создание
         if (file_exists($filename)) 
         {
@@ -350,7 +359,7 @@ class Functionmodel extends CI_Model
         else
         {
             // create folder on the desktop
-            mkdir(SAVE_PATH.'\\'.$title);
+            mkdir(SAVE_IMAGES_PATH.'\\'.$title);
             
             // find & save MAIN image
             // foreach($html->find('a.highslide') as $element)
@@ -358,7 +367,7 @@ class Functionmodel extends CI_Model
                 // $main_img_url = "http:$element->href";
                 // $ext = pathinfo($main_img_url); // разбиваем его на составные
                 // $extension = $ext['extension']; // получаем его расширение
-                // $path = SAVE_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
+                // $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
                 // file_put_contents($path, file_get_contents($main_img_url)); // само скачивание картинки и сохранение
             // }
             
@@ -367,7 +376,7 @@ class Functionmodel extends CI_Model
                 $main_img_url = "http:$element->src";
                 $ext = pathinfo($main_img_url); // разбиваем его на составные
                 $extension = $ext['extension']; // получаем его расширение
-                $path = SAVE_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
+                $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
                 file_put_contents($path, file_get_contents($main_img_url)); // само скачивание картинки и сохранение
             }
             
@@ -382,7 +391,7 @@ class Functionmodel extends CI_Model
 
                 $ext2 = pathinfo($add_img_url); // разбиваем его на составные
                 $extension2 = $ext2['extension']; // получаем его расширение
-                $path2 = SAVE_PATH.'/'.$title.'/'.$i.'.'.$extension2; // указываем путь, куда будем сохранять изображения
+                $path2 = SAVE_IMAGES_PATH.'/'.$title.'/'.$i.'.'.$extension2; // указываем путь, куда будем сохранять изображения
                 file_put_contents($path2, file_get_contents($add_img_url)); // само скачивание картинки и сохранение
                 $i++;
             }

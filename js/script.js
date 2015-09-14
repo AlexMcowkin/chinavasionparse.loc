@@ -2,14 +2,7 @@ $(document).ready(function(){
 	
 	var sitename = location.protocol + '//' + location.hostname;
 
-	$('#dataparcebuttontgp').hide();
-	$('#dataparcebuttongac').hide();
-	$('#dataparcebuttongbo').hide();
-	$('#urlparceurlbuttongbo').hide();
-	$('#urlparcebuttongbo').hide();
-	$('#dataparcebuttonwgcgvn').hide();
-	
-	$('#preloader').hide();
+	$('body #preloader_button').hide();
 	
 /****************************************************/
 /***** PARCE ALL PRODUCTS FROM CATEGORY**************/
@@ -21,18 +14,27 @@ $(document).ready(function(){
 		var catid = $(this).attr('rel');
 		var form_data = {catid:catid};
 
-		$(this).attr('disabled', true);
-
-		$.post(sitename + "/index.php/chinavasioncontroller/parcecategoryproducts",form_data,function(result)
-		{
-			
-			// $('#resultblock').hide();
-			// $('#dataparcebuttontgp').attr('disabled', true);
-			// / $('#dangerblock').show();
-			// $('#resultblock2').append("<h4>Total: <span id='current'>0</span> from " + result + "</h4><hr />");
-			alert(result);
-		});
+		$.ajax({
+			url : sitename + "/index.php/chinavasioncontroller/parcecategoryproducts",
+			type : 'POST',
+			data : form_data,
+			beforeSend: function() {
+				$('#trcatid_' + catid + ' img').show();
+				$(this).attr('disabled', true);
+			},	
+			complete: function() {
+				$('#trcatid_' + catid + ' img').hide();
+			},	
+			success : function(msg)
+			{
+				$('#tdcatid_' + catid).html('<span class="text-success">PARCED</span>');
+				// alert(msg);
+			},
+			error: function(msg)
+			{
+				alert(msg);
+			}
+		});		
 	});
-
-
+/****************************************************/
 });
