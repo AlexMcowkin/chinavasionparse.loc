@@ -6,10 +6,10 @@ RewriteEngine On
 
 RewriteRule ^index.php$ / [QSA,R]
 
-#RewriteCond %{HTTP_HOST} ^makovkin\.info$ [NC] 
-#RewriteRule ^(.*)$ "http\:\/\/www\.makovkin\.info" [L,R=301]
+#RewriteCond %{HTTP_HOST} ^chinavasionparse\.loc$ [NC] 
+#RewriteRule ^(.*)$ "http\:\/\/www\.chinavasionparse\.loc" [L,R=301]
 
-#RewriteCond %{HTTP_HOST} ^www\.makovkin\.info$ [NC]
-#RewriteRule ^(.*)$ http://makovkin.info/$1 [R=301,L]
+#RewriteCond %{HTTP_HOST} ^www\.chinavasionparse\.loc$ [NC]
+#RewriteRule ^(.*)$ http://chinavasionparse.loc/$1 [R=301,L]
 
 ErrorDocument 404 /

@@ -27,8 +27,7 @@ $(document).ready(function(){
 			},	
 			success : function(msg)
 			{
-				$('#tdcatid_' + catid).html('<span class="text-success">PARCED</span>');
-				// alert(msg);
+				$('#tdcatid_' + catid).html('<span class="text-success">PARCED: ' + msg + ' products</span>');
 			},
 			error: function(msg)
 			{

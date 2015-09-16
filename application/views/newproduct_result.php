@@ -20,6 +20,7 @@
               <th>#</th>
               <th>Link</th>
               <th>Sku</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
@@ -30,6 +31,7 @@
               echo "<td>".$i++."</td>";
               echo "<td><a href='".$value['0']."' target='_blank'>".$value['0']."</a></td>";
               echo "<td>".$value['1']."</td>";
+              echo "<td><a href='".base_url()."productdetails/".$value['1']."' title='".$value['1']."' target='_blank'>details</a></td>";
               echo '</tr>';
             }
             ?>

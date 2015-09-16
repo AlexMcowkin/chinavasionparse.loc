@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="<?=$metadescription;?>" />
-    <meta name="keywords" content="chinavasion.com" />
+    <meta name="keywords" content="chinavasion.com api parcer" />
     <meta name="author" content="Маковкин Александр" />
     <meta name="contact" content="info@makovkin.info" />
     <!--[if IE]>
@@ -20,3 +20,8 @@
     <![endif]-->
 </head>
 <body>
+<noscript>Для полной работы сайта необходимо, чтоб в вашем браузере был включен JavaScript.<br />Здесь вы найдете <a href="http://www.enable-javascript.com/" rel='nofollow' target='_blank'>инструкции</a> как включить JavaScript в вашем браузере.</noscript>
+
+<!--[if lt IE 8]>
+<p class="jumbotron">Вы используете <strong>старую</strong> версию баузера. Пожалуйста, <a href="http://browsehappy.com/" rel='nofollow' target='_blank'>обновите ваш браузер</a>.</p>
+<![endif]-->

@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
             </button>
             <p>
-                <a class="navbar-brand" href="<?=base_url();?>" title="chinavasionparce.loc">Chinavasionparce.loc</a>
+                <a class="navbar-brand" href="<?=base_url();?>" title="chinavasionparce.loc"><span style="color:#F5F5F5;text-shadow: 2px 2px 2px #333;">ChinavasionParce.loc</span></a>
                 <small>based on chinavasion.com API</small>
             </p>
          </div>
@@ -20,8 +20,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="navbar-collapse collapse ">
-                    <ul id="menu-top" class="nav navbar-nav navbar-right">
-                        <li><a href="<?=base_url();?>"><span class="icon-home"></span></a></li>
+                    <ul id="menu-top" class="nav navbar-nav navbar-left">
+                        <li><a href="<?=base_url();?>"><span class="icon-home icon-large"></span></a></li>
                         <li><a href="<?=base_url();?>faq"> FAQ</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
@@ -51,6 +51,11 @@
                         <!-- <li><a href="<?=base_url();?>parsexml">parse XML</a></li> -->
                         <!-- <li><a href="<?=base_url();?>deletexmls">detele XMLs</a></li> -->
                         <!-- <li><a href="<?=base_url();?>results">parse RESULT</a></li> -->
+                    </ul>
+
+                    <ul id="menu-top" class="nav navbar-nav navbar-right">
+                        <li><a href="<?=base_url();?>uploadstock"><span class="icon-arrow-down"></span> UPLOAD STOCK</a></li>
+                        <li><a href="<?=base_url();?>downloadstock"><span class="icon-arrow-up"></span> DOWNLOAD STOCK</a></li>
                     </ul>
                 </div>
             </div>

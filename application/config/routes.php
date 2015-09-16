@@ -55,6 +55,8 @@ $route['translate_uri_dashes'] = FALSE;
 $route['results/(:any)'] = 'Chinavasioncontroller/results/$1';
 $route['([a-z]+)'] = 'Chinavasioncontroller/$1';
 
+$route['productdetails/(:any)'] = "Chinavasioncontroller/productdetails/$1";
+
 // $route['adminka/([a-z]+)'] = 'Backendcontroller/$1';
 // $route['adminka/([a-z]+)/add'] = 'Backendcontroller/$1/add';
 // $route['adminka/([a-z]+)/(\d+)'] = 'Backendcontroller/$1';

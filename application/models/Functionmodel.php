@@ -60,10 +60,12 @@ class Functionmodel extends CI_Model
             return $query->result();
         }
     }
+
 /**************************************************************************/
 /************************    PRODUCTS    **********************************/
 /**************************************************************************/
-    function parceCategoryProducts($id, $start = 0)
+   
+   function parceCategoryProducts($id, $start = 0, $data = array())
     {
         $query = $this->db->query("SELECT name FROM categories WHERE id = $id LIMIT 1");
         $categoryName = $query->row(0)->name;
@@ -109,21 +111,19 @@ class Functionmodel extends CI_Model
                     'status' => $value['status'],
                     'continuity' => $value['continuity']
                 );
-                // $this->db->insert('products', $data);
             }
 
-            $this->db->insert_batch('products', $data);
-            empty($data);
-
+            $start = $start + 50;
+            
             if($result['pagination']['total'] > $start)
             {
-                $start = $start + 50;
-                $this->parceCategoryProducts($id, $start);
+               return $data[] = $this->parceCategoryProducts($id, $start, $data);
             }
             else
             {
+                $this->db->insert_batch('products', $data);
                 $this->db->update('categories', array('parce_status'=>1), "id=".$id);
-                return true;
+                return $data;
             }
         }
     }
@@ -182,6 +182,93 @@ class Functionmodel extends CI_Model
         }
     }
 
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
+
+    function getProductDetails($sku)
+    {
+        $arrayData = array('key'=>CHINAVASION_APIKEY, 'model_code'=>$sku);
+        $jsonRequest = json_encode($arrayData);
+
+        $curl = curl_init(CHINAVASION_APIURL_PRODUCTDETAIL);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonRequest);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $jsonResponse = curl_exec($curl);
+        $statusResponse = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if($statusResponse != 200)
+        {
+            $msg = "Error: call to URL CHINAVASION_APIURL_PRODUCTDETAIL failed with status $statusResponse, response $jsonResponse, curl_error ".curl_error($curl).", curl_errno ".curl_errno($curl);
+            curl_close($curl);
+            return $msg;
+        }
+        curl_close($curl);
+        $result = json_decode($jsonResponse, true);
+
+        if(isset($result['error']))
+        {
+            return $result['error_message'].'<br/><br/>'.$jsonRequest;
+        }
+        else
+        {
+            foreach ($result['products'] as $value)
+            {
+                $data = array(
+                    'id' => $value['product_id'],
+                    'sku' => $value['model_code'],
+                    'ean' => $value['ean'],
+                    'full_product_name' => $value['full_product_name'],
+                    'category_name' => $value['category_name'],
+                    'product_url' => $value['product_url'],
+                    'main_picture' => $value['main_picture'],
+                    'additional_images' => $value['additional_images'],
+                    'meta_description' => $value['meta_description'],
+                    'overview' => $value['overview'],
+                    'specification' => $value['specification'],
+                    'price' => $value['price'],
+                    'status' => $value['status'],
+                    'continuity' => $value['continuity']
+                );
+            }
+        }
+
+        return $data;
+    }
+
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
+
+    function getStockDataFromCsv($csvfile)
+    {
+        $file = fopen($csvfile, 'r');
+        
+        $r = 0;
+        
+        while (($row = fgetcsv($file, 10000, ",")) != FALSE)
+        {
+            $r++;
+            if($r == 1)
+            {
+                if($row['0'] == 'SKU') {continue;}
+                else { return 'ERROR: wrong file content';}
+            }
+
+            $sqlins = "INSERT INTO ourproducts (id, sku, status) VALUES (NULL,'".$row[0]."','".$row[1]."')";
+            $this->db->query($sqlins);
+        }
+        
+        fclose($file);
+        array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/*.csv"));
+    }
+
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
 
     // function downloadXml()    
     // {
@@ -289,6 +376,10 @@ class Functionmodel extends CI_Model
     //     return true;
     // }
 
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
+
     function parseImages($imgurl)
     {
         include('php/simple_html_dom.php');
@@ -304,14 +395,10 @@ class Functionmodel extends CI_Model
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5'); // set user agent
-        $out = curl_exec($curl); // get content
+        $out = curl_exec($curl);
 
-        // echo curl_error($curl);  echo $out; die();
-
-        // Create DOM from URL or file
         $html = str_get_html($out);
 
-        // get the TITLE of current page
         foreach($html->find('h1[class="fn"]') as $h1t)
         {
             //echo $h1t->innertext;
@@ -360,17 +447,7 @@ class Functionmodel extends CI_Model
         {
             // create folder on the desktop
             mkdir(SAVE_IMAGES_PATH.'\\'.$title);
-            
-            // find & save MAIN image
-            // foreach($html->find('a.highslide') as $element)
-            // {
-                // $main_img_url = "http:$element->href";
-                // $ext = pathinfo($main_img_url); // разбиваем его на составные
-                // $extension = $ext['extension']; // получаем его расширение
-                // $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
-                // file_put_contents($path, file_get_contents($main_img_url)); // само скачивание картинки и сохранение
-            // }
-            
+                      
             foreach($html->find('#xxyts img') as $element)
             {
                 $main_img_url = "http:$element->src";
@@ -401,5 +478,10 @@ class Functionmodel extends CI_Model
             return $gallery;
         }
     }
+
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
+
 }
 ?>
