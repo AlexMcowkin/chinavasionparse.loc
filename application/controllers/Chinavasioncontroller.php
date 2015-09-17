@@ -10,17 +10,16 @@ class Chinavasioncontroller extends CI_Controller
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('session');
 		
-		// if($this->session->userdata('zaloginen')){}
-		// else
-		// {
-			// redirect('loginout', 'refresh');
-		// }
+		if($this->session->userdata('zaloginen')){}
+		else
+		{
+			redirect(base_url().'login', 'refresh');
+		}
 	}
 
 	public function index()
 	{
-		$data['metatitle'] = "Chinavasion Parce";
-		$data['metadescription'] = "Chinavasion Parce Site";
+		$data['metatitle'] = $data['metadescription'] = "Chinavasion Parce Site";
 
 		$this->load->view('header', $data);
 		$this->load->view('topmenu');
@@ -182,6 +181,18 @@ class Chinavasioncontroller extends CI_Controller
 		}
 	}
 
+
+	public function downloadstock()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Download Products Stock Data";
+
+		$data['file_name'] = $this->Functionmodel->setUpdateStockToCsv();
+
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('download_stock');
+		$this->load->view('footer');
+	}
 /************************************************************************************************************/
 	// public function importcsv()
 	// {

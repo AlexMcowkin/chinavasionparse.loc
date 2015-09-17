@@ -62,6 +62,5 @@ $route['productdetails/(:any)'] = "Chinavasioncontroller/productdetails/$1";
 // $route['adminka/([a-z]+)/(\d+)'] = 'Backendcontroller/$1';
 // $route['adminka'] = 'Backendcontroller/index';
 
-$route['loginout'] = 'Loginoutcontroller/index';
+$route['login'] = 'Loginoutcontroller/index';
 $route['logout'] = 'Loginoutcontroller/logout';
-$route['loginout'] = 'Loginoutcontroller/index';

@@ -40,5 +40,23 @@
       </div>
     </div>
 
+    <?php if(isset($result)):?>
+    <div class="row">
+      <div class="col-md-12">
+      <hr />
+      <?php if($result > 0):?>
+        <p><?=$result;?> rows were added! =)</p>
+      <?php else:?>
+        <p>=( ... Something went wrong. Check if your CSV file is correct!</p>
+        <p>input file example:<br />
+          <strong>"SKU","QUANTITY"</strong>
+          <br />"sku_1","999"
+          <br />"sku_2","0"
+        </p>
+      <?php endif;?>
+      </div>
+    </div>
+  <?php endif;?>
+
   </div>
 </div> 

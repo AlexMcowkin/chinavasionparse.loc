@@ -22,6 +22,7 @@
                 <div class="navbar-collapse collapse ">
                     <ul id="menu-top" class="nav navbar-nav navbar-left">
                         <li><a href="<?=base_url();?>"><span class="icon-home icon-large"></span></a></li>
+                        <li><a href="<?=base_url();?>logout" onclick="return confirm('Are you sure?')"><span class="icon-warning-sign icon-large"></span></a></li>
                         <li><a href="<?=base_url();?>faq"> FAQ</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>

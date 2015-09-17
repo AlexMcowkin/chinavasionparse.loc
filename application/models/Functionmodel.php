@@ -245,6 +245,8 @@ class Functionmodel extends CI_Model
 
     function getStockDataFromCsv($csvfile)
     {
+        $this->db->empty_table('ourproducts');
+
         $file = fopen($csvfile, 'r');
         
         $r = 0;
@@ -254,16 +256,63 @@ class Functionmodel extends CI_Model
             $r++;
             if($r == 1)
             {
-                if($row['0'] == 'SKU') {continue;}
-                else { return 'ERROR: wrong file content';}
+                if($row['0'] == "SKU") {continue;}
+                else { return 0;}
             }
 
-            $sqlins = "INSERT INTO ourproducts (id, sku, status) VALUES (NULL,'".$row[0]."','".$row[1]."')";
+            $sqlins = "INSERT INTO ourproducts (id, sku, quantity) VALUES (NULL,'".$row[0]."','".$row[1]."')";
             $this->db->query($sqlins);
         }
         
         fclose($file);
         array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/*.csv"));
+
+        return $r;
+    }
+
+    function setUpdateStockToCsv()
+    {
+        $csv_file = '';
+
+        $query = $this->db->query("SELECT sku, quantity FROM ourproducts");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $query2 = $this->db->query("SELECT model_code, status, continuity FROM products WHERE model_code = '{$row->sku}' LIMIT 1");
+                if($query2->num_rows() == 0)
+                {
+                    $csv_file .= '"'.$row->sku.'","0"'."\r\n";
+                }
+                else
+                {
+                    foreach ($query2->result() as $row2)
+                    {
+                        if(($row2->status == 'In Stock') AND ($row2->continuity == 'Normal Product'))
+                        {
+                            $csv_file .= '"'.$row->sku.'","999"'."\r\n";
+                        }
+                        else
+                        {
+                            $csv_file .= '"'.$row->sku.'","0"'."\r\n";
+                        }
+                    }
+                }
+            }
+
+            $file_name = 'ee_stock_update.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+            return $file_name;
+        }
+        else
+        {
+            return 'no_data';
+        }
     }
 
 /**************************************************************************/
