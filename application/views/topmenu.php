@@ -22,8 +22,8 @@
                 <div class="navbar-collapse collapse ">
                     <ul id="menu-top" class="nav navbar-nav navbar-left">
                         <li><a href="<?=base_url();?>"><span class="icon-home icon-large"></span></a></li>
-                        <li><a href="<?=base_url();?>logout" onclick="return confirm('Are you sure?')"><span class="icon-warning-sign icon-large"></span></a></li>
-                        <li><a href="<?=base_url();?>faq"> FAQ</a></li>
+                        <li><a href="<?=base_url();?>logout" onclick="return confirm('Are you sure?')" title="logout"><span class="icon-power-off icon-large"></span></a></li>
+                        <li><a href="<?=base_url();?>faq" title="FAQ"><span class="icon-question-sign icon-large"></span></a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -57,6 +57,7 @@
                     <ul id="menu-top" class="nav navbar-nav navbar-right">
                         <li><a href="<?=base_url();?>uploadstock"><span class="icon-arrow-down"></span> UPLOAD STOCK</a></li>
                         <li><a href="<?=base_url();?>downloadstock"><span class="icon-arrow-up"></span> DOWNLOAD STOCK</a></li>
+                        <li><a href="<?=base_url();?>checkprices"><span class="icon-dollar"></span> CHECK PRICES</a></li>
                     </ul>
                 </div>
             </div>

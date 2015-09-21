@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 17 2015 г., 18:30
+-- Время создания: Сен 21 2015 г., 17:35
 -- Версия сервера: 5.6.17-log
 -- Версия PHP: 5.5.10
 
@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS `ourproducts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sku` varchar(30) NOT NULL,
   `quantity` int(1) NOT NULL,
+  `price` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

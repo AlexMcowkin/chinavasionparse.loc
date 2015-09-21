@@ -33,19 +33,21 @@ class Functionmodel extends CI_Model
         }
         else
         {
-            $this->db->empty_table('products');
             $this->db->empty_table('categories');
+            $this->db->empty_table('products');
 
             $i=0;
             foreach ($result['categories'] as $value)
             {
-                $data = array(
+                $data[] = array(
                     'id'=>$i++,
                     'name' => $value['name'],
                     'url' => $value['url']
                 );
-                $this->db->insert('categories', $data);
+                // $this->db->insert('categories', $data);
             }
+
+            $this->db->insert_batch('categories', $data); 
             
             return true;
         }
@@ -260,7 +262,7 @@ class Functionmodel extends CI_Model
                 else { return 0;}
             }
 
-            $sqlins = "INSERT INTO ourproducts (id, sku, quantity) VALUES (NULL,'".$row[0]."','".$row[1]."')";
+            $sqlins = "INSERT INTO ourproducts (id, sku, quantity, price) VALUES (NULL,'".$row[0]."','".$row[1]."','".$row[2]."')";
             $this->db->query($sqlins);
         }
         
@@ -272,7 +274,7 @@ class Functionmodel extends CI_Model
 
     function setUpdateStockToCsv()
     {
-        $csv_file = '';
+        $csv_file = '"SKU","QUANTITY"'."\r\n";
 
         $query = $this->db->query("SELECT sku, quantity FROM ourproducts");
         if ($query->num_rows() > 0)
@@ -300,7 +302,7 @@ class Functionmodel extends CI_Model
                 }
             }
 
-            $file_name = 'ee_stock_update.csv';
+            $file_name = 'ee_stock_export.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload\/';
     
             $file_path_name = $file_path . $file_name;
@@ -315,6 +317,39 @@ class Functionmodel extends CI_Model
         }
     }
 
+/**************************************************************************/
+/**************************************************************************/
+/**************************************************************************/
+    function getNewPrices()
+    {
+        $result = array();
+
+        $query = $this->db->query("SELECT sku, price FROM ourproducts");
+
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $query2 = $this->db->query("SELECT model_code, price, product_url FROM products WHERE model_code = '{$row->sku}' AND status = 'In Stock' AND continuity = 'Normal Product' LIMIT 1");
+                if($query2->num_rows() > 0)
+                {
+                    foreach ($query2->result() as $row2)
+                    {
+                        if ($row->price != $row2->price)
+                        {
+                            $result[] = array($row->sku, $row->price, $row2->price, $row2->product_url);
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            return 'No Data.';
+        }
+    }
 /**************************************************************************/
 /**************************************************************************/
 /**************************************************************************/

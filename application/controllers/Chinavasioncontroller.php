@@ -146,7 +146,7 @@ class Chinavasioncontroller extends CI_Controller
 		{
 			$config['upload_path'] = './upload/';
 			$config['allowed_types'] = 'csv';
-			$config['file_name'] = 'ee_stock_update';
+			$config['file_name'] = 'ee_stock_import';
 			$config['overwrite'] = TRUE;
 			$config['max_size']	= '1000';
 	
@@ -193,6 +193,23 @@ class Chinavasioncontroller extends CI_Controller
 		$this->load->view('download_stock');
 		$this->load->view('footer');
 	}
+
+/******************************************************************************************************************/
+/******************************************************************************************************************/
+/******************************************************************************************************************/
+
+	public function checkprices()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Check New Prices";
+
+		$data['result'] = $this->Functionmodel->getNewPrices();
+
+		$this->load->view('header', $data);
+		$this->load->view('topmenu');
+		$this->load->view('new_prices');
+		$this->load->view('footer');
+	}
+
 /************************************************************************************************************/
 	// public function importcsv()
 	// {
