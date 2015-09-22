@@ -49,9 +49,9 @@
       <?php else:?>
         <p>=( ... Something went wrong. Check if your CSV file is correct!</p>
         <p>input file example:<br />
-          <strong>"SKU","QUANTITY"</strong>
-          <br />"sku_1","999"
-          <br />"sku_2","0"
+          <strong>"SKU","QUANTITY","PRICE"</strong>
+          <br />"sku_1","999","123.9500"
+          <br />"sku_2","0","1.9900"
         </p>
       <?php endif;?>
       </div>

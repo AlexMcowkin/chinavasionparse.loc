@@ -302,6 +302,8 @@ class Functionmodel extends CI_Model
                 }
             }
 
+            $csv_file .= 'FINISH'."\r\n";
+
             $file_name = 'ee_stock_export.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload\/';
     
