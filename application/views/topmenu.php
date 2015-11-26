@@ -32,12 +32,11 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">STOCK <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?=base_url();?>#">category_1</a></li>
-                                <li><a href="<?=base_url();?>#">category_2</a></li>
-                                <li class="divider"></li>
-                                <li><a href="<?=base_url();?>#">refresh site to rebuild this list</a></li>
+                                <li><a href="<?=base_url();?>uploadstock">UPLOAD STOCK</a></li>
+                                <li><a href="<?=base_url();?>downloadstock">DOWNLOAD STOCK</a></li>
+                                <li><a href="<?=base_url();?>checkprices">CHECK PRICES</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -48,16 +47,25 @@
                             </ul>
                         </li>
                         <li><a href="<?=base_url();?>parseimg">Save Images</a></li>
-                        <!-- <li><a href="<?=base_url();?>downloadxml">download XML</a></li> -->
-                        <!-- <li><a href="<?=base_url();?>parsexml">parse XML</a></li> -->
-                        <!-- <li><a href="<?=base_url();?>deletexmls">detele XMLs</a></li> -->
-                        <!-- <li><a href="<?=base_url();?>results">parse RESULT</a></li> -->
                     </ul>
 
                     <ul id="menu-top" class="nav navbar-nav navbar-right">
-                        <li><a href="<?=base_url();?>uploadstock"><span class="icon-arrow-down"></span> UPLOAD STOCK</a></li>
-                        <li><a href="<?=base_url();?>downloadstock"><span class="icon-arrow-up"></span> DOWNLOAD STOCK</a></li>
-                        <li><a href="<?=base_url();?>checkprices"><span class="icon-dollar"></span> CHECK PRICES</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export/Import <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=base_url();?>#">Get Categories</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import categories</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import categories seo url</a></li>
+                                <li class="divider"></li>
+                                <li><a href="<?=base_url();?>#">Get Products</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import products</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import images</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import descriptions</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import products to category</a></li>
+                                <li><a href="<?=base_url();?>#">CSV: import products seo url</a></li>
+                                <li class="divider"></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

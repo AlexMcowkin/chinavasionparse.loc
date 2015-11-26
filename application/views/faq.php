@@ -10,10 +10,10 @@
     <div class="row">
       <div class="col-md-12">
           <p>How to use this parcer...</p>
-
           <ul>
             <li>In application\config\constants.php change chanvasion's constants like CHINAVASION_APIKEY</li>
             <li>In application\config\constants.php change constant SAVE_IMAGES_PATH for saving images right to your desctop</li>
+            <li>change price calculation formula in...</li>
           </ul>
       </div>
     </div>

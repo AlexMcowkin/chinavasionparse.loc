@@ -95,4 +95,5 @@ define('CHINAVASION_APIKEY', 'lEKi8_7hpnu-F8ZskqDBV90bk2rq7VQxXRleV-GiCQk.');
 define('CHINAVASION_APIURL_CATEGORY', 'https://secure.chinavasion.com/api/getCategory.php');
 define('CHINAVASION_APIURL_PRODUCTLIST', 'https://secure.chinavasion.com/api/getProductList.php');
 define('CHINAVASION_APIURL_PRODUCTDETAIL', 'https://secure.chinavasion.com/api/getProductDetails.php');
-define('SAVE_IMAGES_PATH','C:\Users\phpist\Desktop');
+// define('SAVE_IMAGES_PATH','C:\Users\phpist\Desktop');
+define('SAVE_IMAGES_PATH','C:\Users\phpist85\Desktop');
