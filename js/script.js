@@ -5,7 +5,7 @@ $(document).ready(function(){
 	$('body #preloader_button').hide();
 	
 /****************************************************/
-/***** PARCE ALL PRODUCTS FROM CATEGORY**************/
+/***** PARSE ALL PRODUCTS FROM CATEGORY**************/
 /****************************************************/
 	$(document).on("click", '#parcebutton', function(e){
 	
@@ -21,13 +21,13 @@ $(document).ready(function(){
 			beforeSend: function() {
 				$('#trcatid_' + catid + ' img').show();
 				$(this).attr('disabled', true);
-			},	
+			},
 			complete: function() {
 				$('#trcatid_' + catid + ' img').hide();
 			},	
 			success : function(msg)
 			{
-				$('#tdcatid_' + catid).html('<span class="text-success">PARCED: ' + msg + ' products</span>');
+				$('#tdcatid_' + catid).html('<span class="text-success">PARSED: ' + msg + ' products</span>');S
 			},
 			error: function(msg)
 			{

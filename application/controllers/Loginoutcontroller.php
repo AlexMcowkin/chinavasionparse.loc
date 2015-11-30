@@ -21,9 +21,9 @@ class LoginoutController extends CI_Controller {
 			{
 				$data['metatitle'] = $data['metadescription'] = "Chinavasion Parce Site";
 
-				$this->load->view('header', $data);
-				$this->load->view('login_form', $data);
-				$this->load->view('footer');
+				$this->load->view('common/header', $data);
+				$this->load->view('common/login_form', $data);
+				$this->load->view('common/footer');
 			}
 			else
 			{
@@ -34,9 +34,9 @@ class LoginoutController extends CI_Controller {
 		{
 			$data['metatitle'] = $data['metadescription'] = "Chinavasion Parce Site";
 
-			$this->load->view('header', $data);
-			$this->load->view('login_form', $data);
-			$this->load->view('footer');
+			$this->load->view('common/header', $data);
+			$this->load->view('common/login_form', $data);
+			$this->load->view('common/footer');
 		}
 	}
 

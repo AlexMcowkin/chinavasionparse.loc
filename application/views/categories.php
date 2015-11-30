@@ -23,10 +23,10 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>#</th>
+                <th>#ID</th>
                 <th>Name</th>
                 <th>Link</th>
-                <th>Parce Status</th>
+                <th>Parse Status</th>
               </tr>
             </thead>
             <tbody>
@@ -37,11 +37,11 @@
                 <td><a href="<?=$value->url?>" target="_blank" title="click here"><?=$value->url?></a></td>
                 <?php if($value->parce_status == '0'):?>
                   <td id="tdcatid_<?=$value->id;?>">
-                    <a id="parcebutton" class="btn btn-warning btn-xs" href="#parceit" role="button" rel="<?=$value->id;?>" title="parce it">parce it</a>
+                    <a id="parcebutton" class="btn btn-warning btn-xs" href="#parseit" role="button" rel="<?=$value->id;?>" title="parse it">parse it</a>
                     <img src="img/preloader-small.gif" id="preloader_button"/></td>
                 <?php else:?>
                   <td>
-                    <span class="text-success">PARCED</span>
+                    <span class="text-success">PARSED: <?=$value->total;?> products</span>
                   </td>
                 <?php endif;?>
               </tr>

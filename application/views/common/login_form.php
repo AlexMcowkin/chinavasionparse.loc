@@ -7,13 +7,15 @@
       </div>
     </div>
 
+    <?php if(validation_errors()): ?>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="alert alert-danger">
-          <?php echo validation_errors(); ?>
+          <?=validation_errors();?>
         </div>
       </div>
     </div>
+    <?php endif;?>
 
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
@@ -23,7 +25,7 @@
               <input type="email" name="mailLogin" required placeholder="Email Here..." class="form-control" value="admin@admin.com"/>
           </div>
           <div class="form-group">
-              <label for="title">Product Link:</label>
+              <label for="title">Password:</label>
               <input type="password" name="pwdLogin" required placeholder="Password Here..." class="form-control" value="admin"/>
           </div>
           <div class="form-group">

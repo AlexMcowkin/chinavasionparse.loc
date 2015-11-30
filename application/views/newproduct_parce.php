@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <p>URL for parce: <strong><?=$newproductsurl;?></strong></p>
+        <p>URL for parse: <strong><?=$newproductsurl;?></strong></p>
         <p>Total new products: <strong><?=$result;?></strong></p>
         <p><a href="<?=base_url();?>getnewproducts" title="show new products links">show new products links</a></p>
       </div>

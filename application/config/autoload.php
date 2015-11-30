@@ -88,7 +88,7 @@ $autoload['drivers'] = array('cache');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('form', 'url', 'string');
+$autoload['helper'] = array('form', 'url', 'string', 'chinavasion');
 
 
 /*
@@ -137,4 +137,4 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$autoload['model'] = array('Functionmodel', 'Loginoutmodel');
+$autoload['model'] = array('Chinavasionmodel', 'Loginoutmodel', 'Opencartmodel');

@@ -1,5 +1,5 @@
 <?php 
-class Functionmodel extends CI_Model
+class Chinavasionmodel extends CI_Model
 {
 /**************************************************************************/
 /**********************    CATEGORIES    **********************************/
@@ -33,21 +33,41 @@ class Functionmodel extends CI_Model
         }
         else
         {
-            $this->db->empty_table('categories');
-            $this->db->empty_table('products');
+            $this->db->empty_table('cv_categories');
+            $this->db->query('ALTER TABLE cv_categories AUTO_INCREMENT = 1');
+            $this->db->empty_table('cv_products');
+            $this->db->query('ALTER TABLE cv_products AUTO_INCREMENT = 1');
+            $this->db->empty_table('cv_products_imgs');
+            $this->db->query('ALTER TABLE cv_products_imgs AUTO_INCREMENT = 1');
 
-            $i=0;
+            $i=100;
             foreach ($result['categories'] as $value)
             {
-                $data[] = array(
+                $data = array(
                     'id'=>$i++,
                     'name' => $value['name'],
-                    'url' => $value['url']
+                    'url' => $value['url'],
+                    'parentname' => '',
+                    'img' => $value['image'],
                 );
-                // $this->db->insert('categories', $data);
+                $this->db->insert('cv_categories', $data);
+                $parentname = $value['name'];
+                empty($data);
+                
+                foreach ($value['subcategories'] as $subvalue)
+                {
+                    $subdata = array(
+                        'id'=>$i++,
+                        'name' => $subvalue['name'],
+                        'url' => $subvalue['url'],
+                        'parentname' => $parentname,
+                        'img' => $subvalue['image'],
+                    );
+                    $this->db->insert('cv_categories', $subdata);
+                    empty($subdata);
+                    empty($parentname);
+                }
             }
-
-            $this->db->insert_batch('categories', $data); 
             
             return true;
         }
@@ -56,7 +76,7 @@ class Functionmodel extends CI_Model
     function listCategories()
     {
         $newProductsArray = array();
-        $query = $this->db->query("SELECT id, name, url, parce_status FROM categories ORDER BY name");
+        $query = $this->db->query("SELECT id, name, url, parce_status, total FROM cv_categories WHERE parentname = '' ORDER BY name");
         if($query->num_rows() > 0)
         {
             return $query->result();
@@ -69,10 +89,10 @@ class Functionmodel extends CI_Model
    
    function parceCategoryProducts($id, $start = 0, $data = array())
     {
-        $query = $this->db->query("SELECT name FROM categories WHERE id = $id LIMIT 1");
+        $query = $this->db->query("SELECT name FROM cv_categories WHERE id = $id LIMIT 1");
         $categoryName = $query->row(0)->name;
 
-        $this->db->delete('products', array('category_name' => $categoryName));
+        $this->db->delete('cv_products', array('category_name' => $categoryName));
 
         $arrayData = array('key'=>CHINAVASION_APIKEY, 'categories'=>array($categoryName), 'pagination'=>array('start'=>$start, 'count'=>50));
         $jsonRequest = json_encode($arrayData);
@@ -104,15 +124,39 @@ class Functionmodel extends CI_Model
             foreach ($result['products'] as $value)
             {
                 $data[] = array(
+                    'product_id'=>$value['product_id'],
                     'model_code' => $value['model_code'],
                     'ean' => $value['ean'],
                     'full_product_name' => $value['full_product_name'],
+                    'short_product_name' => $value['short_product_name'],
                     'category_name' => $value['category_name'],
+                    'subcategory_name' => $value['subcategory_name'],
                     'price' => $value['price'],
+                    'retail_price'=> $value['retail_price'],
                     'product_url' => $value['product_url'],
+                    'main_picture'=> $value['main_picture'],
+                    'meta_keyword'=> $value['meta_keyword'],
+                    'meta_description'=> $value['meta_description'],
+                    'overview'=> $value['overview'],
+                    'specification'=> $value['specification'],
                     'status' => $value['status'],
-                    'continuity' => $value['continuity']
+                    'continuity' => $value['continuity'],
                 );
+
+                $_countAdditionlImages = count($value['additional_images']);
+                if($_countAdditionlImages > 0)
+                {
+
+                    for($j=0;$j<$_countAdditionlImages;$j++)
+                    {
+                        $subdata = array(
+                            'prod_id'=>$value['product_id'],
+                            'img' => $value['additional_images'][$j],
+                        );
+                        $this->db->insert('cv_products_imgs', $subdata);
+                        empty($subdata);
+                    }
+                }
             }
 
             $start = $start + 50;
@@ -123,8 +167,8 @@ class Functionmodel extends CI_Model
             }
             else
             {
-                $this->db->insert_batch('products', $data);
-                $this->db->update('categories', array('parce_status'=>1), "id=".$id);
+                $this->db->insert_batch('cv_products', $data);
+                $this->db->update('cv_categories', array('parce_status'=>1, 'total'=>count($data)), "id=".$id);
                 return $data;
             }
         }
@@ -136,7 +180,7 @@ class Functionmodel extends CI_Model
 
     function parceNewProductsXml($parcexmlurl)
     {
-        $this->db->empty_table('newproducts');
+        $this->db->empty_table('cv_newproducts');
 
         $feed = file_get_contents($parcexmlurl);
         $xml = new SimpleXmlElement($feed);
@@ -154,7 +198,7 @@ class Functionmodel extends CI_Model
                 'date' => date('Y-m-d', strtotime($item_dc->date)),
             );
 
-            $this->db->insert('newproducts', $data);
+            $this->db->insert('cv_newproducts', $data);
             unset($data);
             $rowsCount += $this->db->affected_rows();
         }
@@ -165,12 +209,12 @@ class Functionmodel extends CI_Model
     function getNewProducts()
     {
         $newProductsArray = array();
-        $query = $this->db->query("SELECT link, sku FROM newproducts");
+        $query = $this->db->query("SELECT link, sku FROM cv_newproducts");
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
             {
-                $query2 = $this->db->query("SELECT id FROM ourproducts WHERE sku = '{$row->sku}' LIMIT 1");
+                $query2 = $this->db->query("SELECT id FROM oc_products WHERE sku = '{$row->sku}' LIMIT 1");
                 if($query2->num_rows() == 0)
                 {
                     $newProductsArray[] = array($row->link, $row->sku);
@@ -241,117 +285,6 @@ class Functionmodel extends CI_Model
         return $data;
     }
 
-/**************************************************************************/
-/**************************************************************************/
-/**************************************************************************/
-
-    function getStockDataFromCsv($csvfile)
-    {
-        $this->db->empty_table('ourproducts');
-
-        $file = fopen($csvfile, 'r');
-        
-        $r = 0;
-        
-        while (($row = fgetcsv($file, 10000, ",")) != FALSE)
-        {
-            $r++;
-            if($r == 1)
-            {
-                if($row['0'] == "SKU") {continue;}
-                else { return 0;}
-            }
-
-            $sqlins = "INSERT INTO ourproducts (id, sku, quantity, price) VALUES (NULL,'".$row[0]."','".$row[1]."','".$row[2]."')";
-            $this->db->query($sqlins);
-        }
-        
-        fclose($file);
-        array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/*.csv"));
-
-        return $r;
-    }
-
-    function setUpdateStockToCsv()
-    {
-        $csv_file = '"SKU","QUANTITY"'."\r\n";
-
-        $query = $this->db->query("SELECT sku, quantity FROM ourproducts");
-        if ($query->num_rows() > 0)
-        {
-            foreach ($query->result() as $row)
-            {
-                $query2 = $this->db->query("SELECT model_code, status, continuity FROM products WHERE model_code = '{$row->sku}' LIMIT 1");
-                if($query2->num_rows() == 0)
-                {
-                    $csv_file .= '"'.$row->sku.'","0"'."\r\n";
-                }
-                else
-                {
-                    foreach ($query2->result() as $row2)
-                    {
-                        if(($row2->status == 'In Stock') AND ($row2->continuity == 'Normal Product'))
-                        {
-                            $csv_file .= '"'.$row->sku.'","999"'."\r\n";
-                        }
-                        else
-                        {
-                            $csv_file .= '"'.$row->sku.'","0"'."\r\n";
-                        }
-                    }
-                }
-            }
-
-            $csv_file .= 'FINISH'."\r\n";
-
-            $file_name = 'ee_stock_export.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload\/';
-    
-            $file_path_name = $file_path . $file_name;
-            $file = fopen($file_path_name,"w");
-            fwrite($file,trim($csv_file));
-            fclose($file);
-            return $file_name;
-        }
-        else
-        {
-            return 'no_data';
-        }
-    }
-
-/**************************************************************************/
-/**************************************************************************/
-/**************************************************************************/
-    function getNewPrices()
-    {
-        $result = array();
-
-        $query = $this->db->query("SELECT sku, price FROM ourproducts");
-
-        if ($query->num_rows() > 0)
-        {
-            foreach ($query->result() as $row)
-            {
-                $query2 = $this->db->query("SELECT model_code, price, product_url FROM products WHERE model_code = '{$row->sku}' AND status = 'In Stock' AND continuity = 'Normal Product' LIMIT 1");
-                if($query2->num_rows() > 0)
-                {
-                    foreach ($query2->result() as $row2)
-                    {
-                        if ($row->price != $row2->price)
-                        {
-                            $result[] = array($row->sku, $row->price, $row2->price, $row2->product_url);
-                        }
-                    }
-                }
-            }
-
-            return $result;
-        }
-        else
-        {
-            return 'No Data.';
-        }
-    }
 /**************************************************************************/
 /**************************************************************************/
 /**************************************************************************/
@@ -488,42 +421,11 @@ class Functionmodel extends CI_Model
         foreach($html->find('h1[class="fn"]') as $h1t)
         {
             //echo $h1t->innertext;
-            $title = trim($h1t->innertext);
-            $title = strtolower($title);
-            $title = str_replace(' - ', '-', $title);
-            $title = str_replace(' ', '-', $title);
-            $title = str_replace('.', '', $title);
-            $title = str_replace('(', '', $title);
-            $title = str_replace(',', '', $title);
-            $title = str_replace('/', '', $title);
-            $title = str_replace('\\', '', $title);
-            $title = str_replace('\'', '', $title);
-            $title = str_replace('"', '', $title);
-            $title = str_replace('#', '', $title);
-            $title = str_replace('%', '', $title);
-            $title = str_replace('@', '', $title);
-            $title = str_replace('?', '', $title);
-            $title = str_replace('$', '', $title);
-            $title = str_replace('*', '', $title);
-            $title = str_replace('~', '', $title);
-            $title = str_replace('!', '', $title);
-            $title = str_replace('^', '', $title);
-            $title = str_replace('&', '', $title);
-            $title = str_replace('=', '', $title);
-            $title = str_replace('+', '', $title);
-            $title = str_replace(')', '', $title);
-            $title = str_replace(':', '-', $title);
-            $title = str_replace('\'', '', $title);
-            $title = str_replace('–', '-', $title);
-            $title = str_replace('_', '-', $title);
-            $title = str_replace('"', '', $title);
-            $title = str_replace('quot;', '', $title);
-            
-            if (substr($title, -1) == '-') $title = substr($title, 0, -1 );
+            $title = seofromname($h1t->innertext); // this function from 'chinavasion' helper
         }
 
-        $filename = SAVE_IMAGES_PATH.'\gallery\\'.$title; // !!! personally data
-        // если есть файл, то пропускаем повторное создание
+        $filename = SAVE_IMAGES_PATH.'\gallery\\'.$title;
+        // if we have such folder on desctop so we skip it
         if (file_exists($filename)) 
         {
             curl_close($curl); // clean content
@@ -537,10 +439,10 @@ class Functionmodel extends CI_Model
             foreach($html->find('#xxyts img') as $element)
             {
                 $main_img_url = "http:$element->src";
-                $ext = pathinfo($main_img_url); // разбиваем его на составные
-                $extension = $ext['extension']; // получаем его расширение
-                $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // указываем путь, куда будем сохранять изображения
-                file_put_contents($path, file_get_contents($main_img_url)); // само скачивание картинки и сохранение
+                $ext = pathinfo($main_img_url); // get file data
+                $extension = $ext['extension']; // get file extension
+                $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // set path where will save image
+                file_put_contents($path, file_get_contents($main_img_url)); // download image and save it
             }
             
             // find & save ADDITIONAL images
@@ -552,10 +454,10 @@ class Functionmodel extends CI_Model
                 $add_img_url = str_replace('.thumb_140x140.jpg','',$add_img_url);
                 $add_img_url = str_replace('images/thumbnails/','images/',$add_img_url);
 
-                $ext2 = pathinfo($add_img_url); // разбиваем его на составные
-                $extension2 = $ext2['extension']; // получаем его расширение
-                $path2 = SAVE_IMAGES_PATH.'/'.$title.'/'.$i.'.'.$extension2; // указываем путь, куда будем сохранять изображения
-                file_put_contents($path2, file_get_contents($add_img_url)); // само скачивание картинки и сохранение
+                $ext2 = pathinfo($add_img_url); // get file data
+                $extension2 = $ext2['extension']; // get file extension
+                $path2 = SAVE_IMAGES_PATH.'/'.$title.'/'.$i.'.'.$extension2; // set path where will save image
+                file_put_contents($path2, file_get_contents($add_img_url)); // download image and save it
                 $i++;
             }
             

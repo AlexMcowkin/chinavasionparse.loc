@@ -53,6 +53,7 @@ $route['default_controller'] = 'Chinavasioncontroller';
 $route['404_override'] = 'Chinavasioncontroller/errorpage';
 $route['translate_uri_dashes'] = FALSE;
 $route['results/(:any)'] = 'Chinavasioncontroller/results/$1';
+$route['opencart/(:any)'] = 'Opencartcontroller/$1';
 $route['([a-z]+)'] = 'Chinavasioncontroller/$1';
 
 $route['productdetails/(:any)'] = "Chinavasioncontroller/productdetails/$1";

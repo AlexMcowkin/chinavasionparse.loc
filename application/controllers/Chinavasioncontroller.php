@@ -21,10 +21,10 @@ class Chinavasioncontroller extends CI_Controller
 	{
 		$data['metatitle'] = $data['metadescription'] = "Chinavasion Parce Site";
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
-		$this->load->view('startpage');
-		$this->load->view('footer');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('common/startpage');
+		$this->load->view('common/footer');
 	}
 
 	public function errorpage()
@@ -32,10 +32,10 @@ class Chinavasioncontroller extends CI_Controller
 		
 		$data['metadescription'] = $data['metatitle'] = "Error Page";
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
-		$this->load->view('404');
-		$this->load->view('footer');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('common/404');
+		$this->load->view('common/footer');
 	}
 
 	public function faq()
@@ -43,10 +43,10 @@ class Chinavasioncontroller extends CI_Controller
 		$data['metatitle'] = "FAQ";
 		$data['metadescription'] = "How to use this parcer";
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
-		$this->load->view('faq');
-		$this->load->view('footer');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('common/faq');
+		$this->load->view('common/footer');
 	}
 
 /******************************************************************************************************************/
@@ -57,16 +57,16 @@ class Chinavasioncontroller extends CI_Controller
 	{
 		$data['metadescription'] = $data['metatitle'] = "Get chinavasion's categories";
 
-		$data['resultparce'] = $this->Functionmodel->parceCategories();
+		$data['resultparce'] = $this->Chinavasionmodel->parceCategories();
 		if($data['resultparce'] === TRUE)
 		{
-			$data['resultlist'] = $this->Functionmodel->listCategories();
+			$data['resultlist'] = $this->Chinavasionmodel->listCategories();
 		}
 		
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
 		$this->load->view('categories', $data);
-		$this->load->view('footer');
+		$this->load->view('common/footer');
 	}
 
 	public function listcategories()
@@ -75,21 +75,21 @@ class Chinavasioncontroller extends CI_Controller
 
 		if($data['resultparce'] = TRUE)
 		{
-			$data['resultlist'] = $this->Functionmodel->listCategories();
+			$data['resultlist'] = $this->Chinavasionmodel->listCategories();
 		}
 		
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
 		$this->load->view('categories', $data);
-		$this->load->view('footer');
+		$this->load->view('common/footer');
 	}
 
 	public function parcecategoryproducts()
 	{
 		$catid = $this->input->post('catid');
-		$data['result'] = $this->Functionmodel->parceCategoryProducts($catid, $start = 0, $dataArray = array());
+		$data['result'] = $this->Chinavasionmodel->parceCategoryProducts($catid, $start = 0, $dataArray = array());
 		$data['result'] = count($data['result']);
-		$this->load->view('ajaxsimpleresult',$data);
+		$this->load->view('common/ajaxsimpleresult',$data);
 	}
 
 /******************************************************************************************************************/
@@ -100,23 +100,23 @@ class Chinavasioncontroller extends CI_Controller
 	{
  		$data['metadescription'] = $data['metatitle'] = "New Products parce";
 		$data['newproductsurl'] = "http://rss.chinavasion.com/new_products.xml";
-		$data['result'] = $this->Functionmodel->parceNewProductsXml($data['newproductsurl']);
+		$data['result'] = $this->Chinavasionmodel->parceNewProductsXml($data['newproductsurl']);
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
 		$this->load->view('newproduct_parce', $data);
-		$this->load->view('footer');	
+		$this->load->view('common/footer');	
 	}
 	
 	public function getnewproducts()
 	{
  		$data['metadescription'] = $data['metatitle'] = "New Products result page";
-		$data['result'] = $this->Functionmodel->getNewProducts();
+		$data['result'] = $this->Chinavasionmodel->getNewProducts();
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
 		$this->load->view('newproduct_result', $data);
-		$this->load->view('footer');	
+		$this->load->view('common/footer');	
 	}
 
 /******************************************************************************************************************/
@@ -126,99 +126,23 @@ class Chinavasioncontroller extends CI_Controller
 	public function productdetails($sku)
 	{
 		$data['metadescription'] = $data['metatitle'] = $sku.' product details';
-		$data['result'] = $this->Functionmodel->getProductDetails($sku);
+		$data['result'] = $this->Chinavasionmodel->getProductDetails($sku);
 
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
 		$this->load->view('product_details', $data);
-		$this->load->view('footer');
+		$this->load->view('common/footer');
 	}
 	
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-
-	public function uploadstock()
-	{
-		$data['metadescription'] = $data['metatitle'] = "Import Our Products Stock";
-		
-		if(isset($_POST['submit']))
-		{
-			$config['upload_path'] = './upload/';
-			$config['allowed_types'] = 'csv';
-			$config['file_name'] = 'ee_stock_import';
-			$config['overwrite'] = TRUE;
-			$config['max_size']	= '1000';
-	
-			$this->load->library('upload', $config);
-			
-			if(!$this->upload->do_upload())
-			{
-				$error = array('error' => $this->upload->display_errors());
-				$this->session->set_flashdata('error', $error);
-				$data['result'] = '';
-				$data['filename'] = '';
-			}
-			else
-			{
-				$success = array('upload_data' => $this->upload->data());
-				$this->session->set_flashdata('success', $success);
-				$data['filename'] = $success['upload_data']['file_name'];
-				$data['result'] = $this->Functionmodel->getStockDataFromCsv($success['upload_data']['full_path']);
-			}
-
-			$this->load->view('header', $data);
-			$this->load->view('topmenu');
-			$this->load->view('upload_stock', $data);
-			$this->load->view('footer');
-		}
-		else
-		{
-			$this->load->view('header', $data);
-			$this->load->view('topmenu');
-			$this->load->view('upload_stock');
-			$this->load->view('footer');				
-		}
-	}
-
-
-	public function downloadstock()
-	{
-		$data['metadescription'] = $data['metatitle'] = "Download Products Stock Data";
-
-		$data['file_name'] = $this->Functionmodel->setUpdateStockToCsv();
-
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
-		$this->load->view('download_stock');
-		$this->load->view('footer');
-	}
-
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-
-	public function checkprices()
-	{
-		$data['metadescription'] = $data['metatitle'] = "Check New Prices";
-
-		$data['result'] = $this->Functionmodel->getNewPrices();
-
-		$this->load->view('header', $data);
-		$this->load->view('topmenu');
-		$this->load->view('new_prices');
-		$this->load->view('footer');
-	}
-
 /************************************************************************************************************/
 	// public function importcsv()
 	// {
  // 		$data['metadescription'] = $data['metatitle'] = "Import Our Products";
-	// 	$data['result'] = $this->Functionmodel->setOurProducts();
+	// 	$data['result'] = $this->Chinavasionmodel->setOurProducts();
 
 	// 	if(isset($_POST['submit']))
 	// 	{
-	// 		$data['result'] = $this->Functionmodel->importCsv($this->input->post('filecsv'));
+	// 		$data['result'] = $this->Chinavasionmodel->importCsv($this->input->post('filecsv'));
 
 	// 		$this->load->view('header', $data);
 	// 		$this->load->view('topmenu');
@@ -240,7 +164,7 @@ class Chinavasioncontroller extends CI_Controller
 	// {
  // 		$data['metatitle'] = "Error Page";
 	// 	$data['metadescription'] = "Error Page";
- // 		$data['result'] = $this->Functionmodel->downloadXml();
+ // 		$data['result'] = $this->Chinavasionmodel->downloadXml();
 
 	// 	$this->load->view('header', $data);
 	// 	$this->load->view('topmenu');
@@ -250,14 +174,13 @@ class Chinavasioncontroller extends CI_Controller
 
 	// public function parsexml()
 	// {
- // 		$data['result'] = $this->Functionmodel->parseXml();
+ // 		$data['result'] = $this->Chinavasionmodel->parseXml();
 
 	// 	$this->load->view('header');
 	// 	$this->load->view('topmenu');
 	// 	$this->load->view('parsexml', $data);
 	// 	$this->load->view('footer');	
 	// }
-
 
 	// public function results($date='')
 	// {
@@ -266,7 +189,7 @@ class Chinavasioncontroller extends CI_Controller
 
 	// 	if (empty($date))
 	// 	{
-	// 		$data['result'] = $this->Functionmodel->parseResultsGetDateList();
+	// 		$data['result'] = $this->Chinavasionmodel->parseResultsGetDateList();
 	// 		$data['type'] = 'onlydates';
 
 	// 		$this->load->view('header', $data);
@@ -276,7 +199,7 @@ class Chinavasioncontroller extends CI_Controller
 	// 	}
 	// 	else
 	// 	{
-	// 		$data['result'] = $this->Functionmodel->parseResultsLincs($date);
+	// 		$data['result'] = $this->Chinavasionmodel->parseResultsLincs($date);
 	// 		$data['type'] = 'onlylinks';
 
 	// 		$this->load->view('header', $data);
@@ -288,7 +211,7 @@ class Chinavasioncontroller extends CI_Controller
 
 	// public function deletexmls()
 	// {
- //        $this->Functionmodel->deleteXmls();
+ //        $this->Chinavasionmodel->deleteXmls();
  //        redirect('index', 'refresh');
 	// }
 
@@ -303,25 +226,22 @@ class Chinavasioncontroller extends CI_Controller
 
 		if(isset($_POST['submit']))
 		{
-			$data['result'] = $this->Functionmodel->parseImages($this->input->post('produckulr'));
+			$data['result'] = $this->Chinavasionmodel->parseImages($this->input->post('produckulr'));
 
-			$this->load->view('header', $data);
-			$this->load->view('topmenu');
+			$this->load->view('common/header', $data);
+			$this->load->view('common/topmenu');
 			$this->load->view('gallery_result', $data);
-			$this->load->view('footer');
+			$this->load->view('common/footer');
 		}
 		else
 		{
-			$this->load->view('header', $data);
-			$this->load->view('topmenu');
+			$this->load->view('common/header', $data);
+			$this->load->view('common/topmenu');
 			$this->load->view('gallery_addlink');
-			$this->load->view('footer');				
+			$this->load->view('common/footer');				
 		}
 	}
 
 /******************************************************************************************************************/
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-
 }
 ?>
