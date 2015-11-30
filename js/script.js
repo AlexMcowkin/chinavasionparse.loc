@@ -1,9 +1,14 @@
+$(window).load(function(){
+
+	$("#bodypreload").fadeOut("slow");;
+});
+
 $(document).ready(function(){
 	
 	var sitename = location.protocol + '//' + location.hostname;
 
 	$('body #preloader_button').hide();
-	
+
 /****************************************************/
 /***** PARSE ALL PRODUCTS FROM CATEGORY**************/
 /****************************************************/

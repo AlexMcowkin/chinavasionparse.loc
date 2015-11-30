@@ -20,6 +20,7 @@
     <![endif]-->
 </head>
 <body>
+<div id="bodypreload"></div>
 <noscript>For full functionality of this site, you should enable JavaScript in your browser.<br />Here you can find <a href="http://www.enable-javascript.com/" rel='nofollow' target='_blank'>instructions</a> how to enable JavaScript in your browser.</noscript>
 <!--[if lt IE 8]>
 <p class="jumbotron">You are <strong>using</strong> an old browser. Please, <a href="http://browsehappy.com/" rel='nofollow' target='_blank'>upgrade your browser</a>.</p>
