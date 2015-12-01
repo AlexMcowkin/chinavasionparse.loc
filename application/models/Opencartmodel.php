@@ -111,9 +111,306 @@ class Opencartmodel extends CI_Model
     }
 
 /**************************************************************************/
+/************************ C A T E G O R Y *********************************/
 /**************************************************************************/
+    function csvCatSeoUrlAlias()
+    {
+        $csv_file = '"URL_ALIAS_ID";"QUERY";"KEYWORD"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"";"category_id='.$row->id.'";"'.seofromname($row->name).'"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_seo_url_alias.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvCatStore()
+    {
+        $csv_file = '"CATEGORY_ID";"STORE_ID"'."\r\n";
+
+        $query = $this->db->query("SELECT id FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"0"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_store.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvCatLayout()
+    {
+        $csv_file = '"CATEGORY_ID";"STORE_ID";"LAYOUT_ID"'."\r\n";
+
+        $query = $this->db->query("SELECT id FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"0";"3"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_layout.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvCatTexts()
+    {
+        $csv_file = '"CATEGORY_ID";"LANGUAGE_ID";"NAME";"DESCRIPTION";"META_TITLE";"META_DESCRIPTION";"META_KEYWORD"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $name = cleantitle($row->name);
+                $csv_file .= '"'.$row->id.'";"1";"'.$name.'";"";"Buy online сhinese '.$name.'";"Buy cheap online at discounted prices '.$name.'";""'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_texts.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvCatCommonData()
+    {
+        $csv_file = '"CATEGORY_ID";"IMAGE";"PARENT_ID";"TOP";"COLUMN";"SORT_ORDER";"STATUS";"DATE_ADDED";"DATE_MODIFIED"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories WHERE parentname = '' ORDER BY id");
+        if ($query->num_rows() > 0)
+        {
+            $i=1;
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"";"0";"0";"1";"'.$i++.'";"1";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'"'."\r\n";
+                
+                $query2 = $this->db->query("SELECT id FROM cv_categories WHERE parentname = '$row->name' ORDER BY id");
+                if($query2->num_rows() > 0)
+                {
+                    $j=1;
+                    foreach ($query2->result() as $row2)
+                    {
+                        $csv_file .= '"'.$row2->id.'";"";"'.$row->id.'";"0";"1";"'.$j++.'";"1";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'"'."\r\n";
+                    }
+                }
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_common.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
 /**************************************************************************/
+/************************ P R O D U C T ***********************************/
+/**************************************************************************/
+    function csvProdSeoUrlAlias()
+    {
+        $csv_file = '"URL_ALIAS_ID";"QUERY";"KEYWORD"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"";"category_id='.$row->id.'";"'.seofromname($row->name).'"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_seo_url_alias.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvProdStore()
+    {
+        $csv_file = '"CATEGORY_ID";"STORE_ID"'."\r\n";
+
+        $query = $this->db->query("SELECT id FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"0"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_store.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvProdLayout()
+    {
+        $csv_file = '"CATEGORY_ID";"STORE_ID";"LAYOUT_ID"'."\r\n";
+
+        $query = $this->db->query("SELECT id FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"0";"3"'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_layout.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvProdTexts()
+    {
+        $csv_file = '"CATEGORY_ID";"LANGUAGE_ID";"NAME";"DESCRIPTION";"META_TITLE";"META_DESCRIPTION";"META_KEYWORD"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $name = cleantitle($row->name);
+                $csv_file .= '"'.$row->id.'";"1";"'.$name.'";"";"Buy online сhinese '.$name.'";"Buy cheap online at discounted prices '.$name.'";""'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_texts.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvProdCommonData()
+    {
+        $csv_file = '"CATEGORY_ID";"IMAGE";"PARENT_ID";"TOP";"COLUMN";"SORT_ORDER";"STATUS";"DATE_ADDED";"DATE_MODIFIED"'."\r\n";
+
+        $query = $this->db->query("SELECT id, name FROM cv_categories WHERE parentname = '' ORDER BY id");
+        if ($query->num_rows() > 0)
+        {
+            $i=1;
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"";"0";"0";"1";"'.$i++.'";"1";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'"'."\r\n";
+                
+                $query2 = $this->db->query("SELECT id FROM cv_categories WHERE parentname = '$row->name' ORDER BY id");
+                if($query2->num_rows() > 0)
+                {
+                    $j=1;
+                    foreach ($query2->result() as $row2)
+                    {
+                        $csv_file .= '"'.$row2->id.'";"";"'.$row->id.'";"0";"1";"'.$j++.'";"1";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'"'."\r\n";
+                    }
+                }
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc_category_common.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
 
 
+    function csvProdImgs()
+    {
+        
+    }
+
+    function csvProdCat()
+    {
+        
+    }
+
+/**************************************************************************/
 }
 ?>

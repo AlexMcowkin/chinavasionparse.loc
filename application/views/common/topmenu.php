@@ -53,14 +53,19 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">OpenCart: NEW <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?=base_url();?>opencart/csvcat">CSV: import categories</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvcatcommon">CSV: import categories common data</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvcattext">CSV: import categories text</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvcatlayout">CSV: import categories to layout</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvcatstore">CSV: import categories to store</a></li>
                                 <li><a href="<?=base_url();?>opencart/csvcatseo">CSV: import categories seo url</a></li>
                                 <li class="divider"></li>
-                                <li><a href="<?=base_url();?>opencart/csvprod">CSV: import products</a></li>
-                                <li><a href="<?=base_url();?>opencart/csvprodimgs">CSV: import images</a></li>
-                                <li><a href="<?=base_url();?>opencart/csvproddescr">CSV: import descriptions</a></li>
-                                <li><a href="<?=base_url();?>opencart/csvprodtocat">CSV: import products to category</a></li>
-                                <li><a href="<?=base_url();?>opencart/prodseo">CSV: import products seo url</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodcommon">CSV: import products common data</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodtext">CSV: import products text</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodimg">CSV: import products images</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodcat">CSV: import products to category</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodlayout">CSV: import products to layout</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodstore">CSV: import products to store</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvprodseo">CSV: import products seo url</a></li>
                                 <li class="divider"></li>
                             </ul>
                         </li>

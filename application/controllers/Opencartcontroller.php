@@ -92,10 +92,155 @@ class Opencartcontroller extends CI_Controller
 		$this->load->view('common/footer');
 	}
 /******************************************************************************************************************/
+/************************************ IMPORT: NEW CATEGORIES ******************************************************/
 /******************************************************************************************************************/
+	public function csvcatseo()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories Seo Url Aliases";
+
+		$data['result'] = $this->Opencartmodel->csvCatSeoUrlAlias();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
+	public function csvcatstore()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories To Store";
+
+		$data['result'] = $this->Opencartmodel->csvCatStore();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
+	public function csvcatlayout()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories To Layout";
+
+		$data['result'] = $this->Opencartmodel->csvCatLayout();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
+	public function csvcattext()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories Texts";
+
+		$data['result'] = $this->Opencartmodel->csvCatTexts();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
+	public function csvcatcommon()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories Common Data";
+
+		$data['result'] = $this->Opencartmodel->csvCatCommonData();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
+/******************************************************************************************************************/
+/************************************ IMPORT: NEW PRODUCTS ********************************************************/
 /******************************************************************************************************************/
 	
+	public function csvprodseo()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products Seo Url Aliases";
 
+		$data['result'] = $this->Opencartmodel->csvProdSeoUrlAlias();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodstore()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products To Store";
+
+		$data['result'] = $this->Opencartmodel->csvProdStore();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodlayout()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products To Layout";
+
+		$data['result'] = $this->Opencartmodel->csvProdLayout();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodtext()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products Texts";
+
+		$data['result'] = $this->Opencartmodel->csvProdTexts();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodcommon()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products Common Data";
+
+		$data['result'] = $this->Opencartmodel->csvProdCommonData();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodimg()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products Images";
+
+		$data['result'] = $this->Opencartmodel->csvProdImgs();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
+
+	public function csvprodcat()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Products Categories";
+
+		$data['result'] = $this->Opencartmodel->csvProdCat();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/cv_product');
+		$this->load->view('common/footer');
+	}
 
 /******************************************************************************************************************/
 }

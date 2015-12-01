@@ -13,6 +13,7 @@ if(!function_exists('seofromname'))
 	    $title = str_replace('(', '', $title);
 	    $title = str_replace(',', '', $title);
 	    $title = str_replace('/', '', $title);
+	    $title = str_replace('/-', '', $title);
 	    $title = str_replace('\\', '', $title);
 	    $title = str_replace('\'', '', $title);
 	    $title = str_replace('"', '', $title);
@@ -65,5 +66,18 @@ if(!function_exists('mysellprice'))
 		$price = round($price*110/100,2);
 		$price = round($price)-0.05;
 		return $price;
+	}
+}
+
+/*create seo link*/
+if(!function_exists('cleantitle'))
+{
+	function cleantitle($title)
+	{
+	    $title = trim($title);
+	    $title = str_replace('/', '&', $title);
+	    $title = str_replace('+', '&', $title);
+
+	    return $title;
 	}
 }
