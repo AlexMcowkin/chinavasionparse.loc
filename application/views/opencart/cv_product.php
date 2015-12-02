@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-12">
        <p>
-         Download file: <a href="<?=base_url();?>upload/opencart/<?=$result;?>" target="_blank"><?=$result;?></a>
+         Download file: <a href="<?=base_url();?>upload/opencart/<?=$result;?>"><?=$result;?></a>
        </p>
       </div>
     </div>
