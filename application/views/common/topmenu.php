@@ -1,4 +1,4 @@
-<!-- HEADER END-->
+ HEADER END-->
 <div class="navbar navbar-inverse set-radius-zero">
     <div class="container">
         <div class="navbar-header">
@@ -55,6 +55,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="<?=base_url();?>opencart/csvcatcommon">CSV: import categories common data</a></li>
                                 <li><a href="<?=base_url();?>opencart/csvcattext">CSV: import categories text</a></li>
+                                <li><a href="<?=base_url();?>opencart/csvcatpath">CSV: import categories hierarchy</a></li>
                                 <li><a href="<?=base_url();?>opencart/csvcatlayout">CSV: import categories to layout</a></li>
                                 <li><a href="<?=base_url();?>opencart/csvcatstore">CSV: import categories to store</a></li>
                                 <li><a href="<?=base_url();?>opencart/csvcatseo">CSV: import categories seo url</a></li>
@@ -76,4 +77,4 @@
         </div>
     </div>
 </section>
-<!-- MENU SECTION END-->
+<!-- MENU SECTION END

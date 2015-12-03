@@ -22,6 +22,12 @@
             <li>In application\config\constants.php change constant <strong>SAVE_IMAGES_PATH</strong> for saving images right to your desctop</li>
             <li>Change price calculation formula in application\helpers\chinavasion_helper.php</li>
             <li>You can find database in TRASH folder</li>
+            <li>Change your database:
+              <ul>
+                <li>ALTER TABLE `product` ADD `chinavasion_price` DECIMAL(15,4) NOT NULL DEFAULT '0.0000';</li>
+                <li>ALTER TABLE `product_description` ADD `specification` TEXT NOT NULL;</li>
+              </ul>
+            </li>
           </ul>
       </div>
     </div>

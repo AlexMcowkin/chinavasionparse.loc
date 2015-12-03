@@ -122,12 +122,12 @@ class Opencartmodel extends CI_Model
         {
             foreach ($query->result() as $row)
             {
-                $csv_file .= '"";"category_id='.$row->id.'";"'.seofromname($row->name).'"'."\r\n";
+                $csv_file .= '"";"category_id='.$row->id.'";"'.seofromname($row->name).'.html"'."\r\n";
             }
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_category_seo_url_alias.csv';
+            $file_name = 'oc_category__url_alias.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -153,7 +153,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_category_store.csv';
+            $file_name = 'oc__category_to_store.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -179,7 +179,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_category_layout.csv';
+            $file_name = 'oc__category_to_layout.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -206,7 +206,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_category_texts.csv';
+            $file_name = 'oc__category_description.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -243,7 +243,34 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_category_common.csv';
+            $file_name = 'oc__category.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+
+            return $file_name;
+        }
+    }
+
+    function csvCatHierarchy()
+    {
+        // http://stackoverflow.com/questions/15162193/opencart-how-to-accurately-populate-oc-category-path
+        $csv_file = '"CATEGORY_ID";"PATH_ID";"LEVEL"'."\r\n";
+
+        $query = $this->db->query("SELECT id FROM cv_categories");
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $csv_file .= '"'.$row->id.'";"";""'."\r\n";
+            }
+
+            $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'oc__category_path.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -273,12 +300,12 @@ class Opencartmodel extends CI_Model
                     $subCatSeo = seofromname($row->subcategory_name).'/';
                 }
                 $seoUrl = seofromname($row->category_name).'/'.$subCatSeo.seofromname($row->short_product_name);
-                $csv_file .= '"";"product_id='.$row->product_id.'";"'.$seoUrl.'"'."\r\n";
+                $csv_file .= '"";"product_id='.$row->product_id.'";"'.$seoUrl.'.html"'."\r\n";
             }
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_seo_url_alias.csv';
+            $file_name = 'oc_product__url_alias.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -304,7 +331,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_store.csv';
+            $file_name = 'oc__product_to_store.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -330,7 +357,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_layout.csv';
+            $file_name = 'oc__product_to_layout.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -357,7 +384,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_texts.csv';
+            $file_name = 'oc__product_description.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -392,12 +419,12 @@ class Opencartmodel extends CI_Model
                     $quantity = 0;
                 }
 
-                $csv_file .= '"'.$row->product_id.'";"'.$row->model_code.'";"'.$row->model_code.'";"";"'.$row->ean.'";"";"";"";"";"'.$quantity.'";"5";"'.$row->main_picture.'";"0";"1";"'.mysellprice($row->price).'";"0";"0";"'.date('Y-m-d').'";"0";"1";"0";"0";"0";"1";"0";"1";"1";"1";"0";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'";"'.$row->price.'"'."\r\n";
+                $csv_file .= '"'.$row->product_id.'";"'.$row->model_code.'";"'.$row->model_code.'";"";"'.$row->ean.'";"";"";"";"";"'.$quantity.'";"7";"'.$row->main_picture.'";"0";"1";"'.mysellprice($row->price).'";"0";"0";"'.date('Y-m-d').'";"0";"1";"0";"0";"0";"1";"0";"1";"1";"1";"0";"'.date('Y-m-d H:m:s').'";"'.date('Y-m-d H:m:s').'";"'.$row->price.'"'."\r\n";
             }
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_common.csv';
+            $file_name = 'oc__product.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -437,7 +464,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_imgs.csv';
+            $file_name = 'oc__product_image.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
@@ -481,7 +508,7 @@ class Opencartmodel extends CI_Model
 
             $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'oc_product_cat.csv';
+            $file_name = 'oc__product_to_category.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;

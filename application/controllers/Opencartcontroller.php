@@ -154,6 +154,18 @@ class Opencartcontroller extends CI_Controller
 		$this->load->view('common/footer');
 	}
 
+	public function csvcatpath()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Get Catgegories Hierarchy";
+
+		$data['result'] = $this->Opencartmodel->csvCatHierarchy();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/csv_category');
+		$this->load->view('common/footer');
+	}
+
 /******************************************************************************************************************/
 /************************************ IMPORT: NEW PRODUCTS ********************************************************/
 /******************************************************************************************************************/
