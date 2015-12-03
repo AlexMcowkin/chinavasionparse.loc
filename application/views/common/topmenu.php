@@ -1,4 +1,4 @@
- HEADER END-->
+ <!-- HEADER END -->
 <div class="navbar navbar-inverse set-radius-zero">
     <div class="container">
         <div class="navbar-header">
@@ -14,7 +14,7 @@
          </div>
     </div>
 </div>
-<!-- LOGO HEADER END-->
+<!-- LOGO HEADER END -->
 <section class="menu-section">
     <div class="container">
         <div class="row">
@@ -77,4 +77,4 @@
         </div>
     </div>
 </section>
-<!-- MENU SECTION END
+<!-- MENU SECTION END -->

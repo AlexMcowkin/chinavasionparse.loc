@@ -260,12 +260,28 @@ class Opencartmodel extends CI_Model
         // http://stackoverflow.com/questions/15162193/opencart-how-to-accurately-populate-oc-category-path
         $csv_file = '"CATEGORY_ID";"PATH_ID";"LEVEL"'."\r\n";
 
-        $query = $this->db->query("SELECT id FROM cv_categories");
+        $query = $this->db->query("SELECT id, parentname FROM cv_categories ORDER BY id");
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
             {
-                $csv_file .= '"'.$row->id.'";"";""'."\r\n";
+                if($row->parentname == '')
+                {
+                    $csv_file .= '"'.$row->id.'";"'.$row->id.'";"0"'."\r\n";
+                }
+                else
+                {
+                    $csv_file .= '"'.$row->id.'";"'.$row->id.'";"1"'."\r\n";
+                    
+                    $query2 = $this->db->query("SELECT id FROM cv_categories WHERE name = '$row->parentname' LIMIT 1");
+                    if($query2->num_rows() > 0)
+                    {
+                        foreach($query2->result() as $row2)
+                        {
+                            $csv_file .= '"'.$row->id.'";"'.$row2->id.'";"0"'."\r\n";
+                        }
+                    }
+                }
             }
 
             $csv_file .= 'FINISH'."\r\n";
