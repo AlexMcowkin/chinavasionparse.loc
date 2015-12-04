@@ -130,7 +130,7 @@ class Chinavasionmodel extends CI_Model
                     'full_product_name' => $value['full_product_name'],
                     'short_product_name' => $value['short_product_name'],
                     'category_name' => $value['category_name'],
-                    'subcategory_name' => $value['subcategory_name'],
+                    'subcategory_name' => (empty($value['subcategory_name'])) ? '' : $value['subcategory_name'],
                     'price' => $value['price'],
                     'retail_price'=> $value['retail_price'],
                     'product_url' => $value['product_url'],
