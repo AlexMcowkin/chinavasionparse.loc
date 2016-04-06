@@ -13,7 +13,7 @@
     <?php else:?>
       <div class="row">
         <div class="col-md-12">
-          <p>Click here to <a href="<?=base_url().'upload/'.$file_name?>" title="download csv file">download csv file</a></p>
+          <p>Click here to <a href="<?=base_url().'upload/opencart/'.$file_name?>" title="download csv file">download csv file</a></p>
         </div>
       </div>
     <?php endif;?>

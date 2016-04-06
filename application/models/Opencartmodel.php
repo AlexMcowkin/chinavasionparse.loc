@@ -62,7 +62,7 @@ class Opencartmodel extends CI_Model
                 }
             }
 
-            $csv_file .= 'FINISH'."\r\n";
+            // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'ee_stock_export.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
@@ -81,12 +81,12 @@ class Opencartmodel extends CI_Model
 
     function getNewPrices()
     {
-        $result = array();
-
         $query = $this->db->query("SELECT sku, price FROM oc_products");
 
         if ($query->num_rows() > 0)
         {
+            $result = array();
+
             foreach ($query->result() as $row)
             {
                 $query2 = $this->db->query("SELECT model_code, price, product_url FROM cv_products WHERE model_code = '{$row->sku}' AND status = 'In Stock' AND continuity = 'Normal Product' LIMIT 1");
@@ -106,7 +106,32 @@ class Opencartmodel extends CI_Model
         }
         else
         {
-            return 'No Data.';
+            return 'No Data';
+        }
+    }
+
+    function getNewProducts()
+    {
+        $query = $this->db->query("SELECT model_code, product_url FROM cv_products");
+
+        if ($query->num_rows() > 0)
+        {
+            $result = array();
+
+            foreach ($query->result() as $row)
+            {
+                $query2 = $this->db->query("SELECT id FROM oc_products WHERE sku = '{$row->model_code}' LIMIT 1");
+                if($query2->num_rows() == 0)
+                {
+                    $result[] = array($row->model_code, $row->product_url);
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            return 'No Data';
         }
     }
 

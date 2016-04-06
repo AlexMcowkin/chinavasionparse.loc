@@ -27,7 +27,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <?php echo form_open_multipart('chinavasioncontroller/uploadstock'); ?>
+        <?php echo form_open_multipart('opencartcontroller/uploadstock'); ?>
           <div class="form-group">
                 <label for="title">CSV file:</label>
                 <input type="file" name="userfile" class="form-control" id="file" placeholder="CSV File Here..." accept="text/csv" required />

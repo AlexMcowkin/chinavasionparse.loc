@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-12">
         <?php
-        if(is_array($result))
+        if(is_array($result) && !(empty($result)))
         {
           $i = 1;
         ?>
@@ -43,7 +43,7 @@
         }
         else
         {
-          echo "<h1 class='text-warning'>".$result."</h1>";
+          echo "<h1 class='text-warning'>PRICES didnt change</h1>";
         }
         ?>
       </div>

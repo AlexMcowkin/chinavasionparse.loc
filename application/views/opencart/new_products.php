@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-12">
         <?php
-        if(is_array($result))
+        if(is_array($result) && !(empty($result)))
         {
           $i = 1;
         ?>
@@ -29,9 +29,9 @@
             {
               echo '<tr>';
               echo "<td>".$i++."</td>";
-              echo "<td><a href='".$value['0']."' target='_blank'>".$value['0']."</a></td>";
-              echo "<td>".$value['1']."</td>";
-              echo "<td><a href='".base_url()."productdetails/".$value['1']."' title='".$value['1']."' target='_blank'>details</a></td>";
+              echo "<td><a href='".$value['1']."' target='_blank'>".$value['1']."</a></td>";
+              echo "<td>".$value['0']."</td>";
+              echo "<td><a href='".base_url()."productdetails/".$value['0']."' title='".$value['0']."' target='_blank'>details</a></td>";
               echo '</tr>';
             }
             ?>
@@ -41,7 +41,7 @@
         }
         else
         {
-          echo "<h1 class='text-warning'>".$result."</h1>";
+          echo "<h1 class='text-warning'>No NEW Products</h1>";
         }
         ?>
       </div>

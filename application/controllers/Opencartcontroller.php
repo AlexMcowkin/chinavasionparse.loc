@@ -91,6 +91,19 @@ class Opencartcontroller extends CI_Controller
 		$this->load->view('opencart/new_prices');
 		$this->load->view('common/footer');
 	}
+
+	public function checknew()
+	{
+		$data['metadescription'] = $data['metatitle'] = "Check New Products";
+
+		$data['result'] = $this->Opencartmodel->getNewProducts();
+
+		$this->load->view('common/header', $data);
+		$this->load->view('common/topmenu');
+		$this->load->view('opencart/new_products');
+		$this->load->view('common/footer');
+	}
+	
 /******************************************************************************************************************/
 /************************************ IMPORT: NEW CATEGORIES ******************************************************/
 /******************************************************************************************************************/

@@ -45,9 +45,10 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">OpenCart: STOCK <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?=base_url();?>opencart/uploadstock">UPLOAD STOCK</a></li>
-                                <li><a href="<?=base_url();?>opencart/downloadstock">DOWNLOAD STOCK</a></li>
+                                <li><a href="<?=base_url();?>opencart/uploadstock">UPLOAD STOCK<br /><small>from opencart</small></a></li>
+                                <li><a href="<?=base_url();?>opencart/downloadstock">DOWNLOAD STOCK<br /><small>to opencart</small></a></li>
                                 <li><a href="<?=base_url();?>opencart/checkprices">CHECK PRICES</a></li>
+                                <li><a href="<?=base_url();?>opencart/checknew">CHECK NEW PRODUCTS</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
