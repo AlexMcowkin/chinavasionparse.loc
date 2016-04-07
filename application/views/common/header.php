@@ -6,7 +6,7 @@
     <meta name="description" content="<?=$metadescription;?>" />
     <meta name="keywords" content="chinavasion.com api parser" />
     <meta name="author" content="Маковкин Александр" />
-    <meta name="contact" content="info@makovkin.info" />
+    <meta name="contact" content="mail@makovkin.info" />
     <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->

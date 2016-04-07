@@ -14,13 +14,16 @@
         {
           $i = 1;
         ?>
+        <p>Download <a href="<?=base_url();?>upload/opencart/<?=$downloadcsv;?>" title="csv new price update">new price update</a>.</p>
+        <hr />
         <table class="table table-hover">
           <thead>
             <tr>
               <th>#</th>
               <th>Sku</th>
-              <th>Old Price</th>
-              <th>New Price</th>
+              <th>Old CV Price</th>
+              <th>New CV Price</th>
+              <th>New OC Price</th>
               <th>Link</th>
             </tr>
           </thead>
@@ -33,12 +36,15 @@
               echo "<td>".$value[0]."</td>";
               echo "<td>".$value[1]."</td>";
               echo "<td class='text-danger'>".$value[2]."</td>";
+              echo "<td class='text-success'>".mysellprice($value[2])."</td>";
               echo "<td><a href='".$value[3]."' target='_blank'>".$value[3]."</a></td>";
               echo '</tr>';
             }
             ?>
           </tbody>
         </table>
+        <hr />
+        <p>Download <a href="<?=base_url();?>upload/opencart/<?=$downloadcsv;?>" title="csv new price update">new price update</a>.</p>
         <?php
         }
         else

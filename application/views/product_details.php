@@ -3,7 +3,7 @@
     
     <div class="row">
       <div class="col-md-12">
-        <h4 class="page-head-line">Chinavasion's Prooduct Details:</h4>
+        <h4 class="page-head-line">Chinavasion's Product Details:</h4>
       </div>
     </div>
 

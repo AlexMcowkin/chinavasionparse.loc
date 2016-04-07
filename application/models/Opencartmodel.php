@@ -36,12 +36,12 @@ class Opencartmodel extends CI_Model
     {
         $csv_file = '"SKU","QUANTITY"'."\r\n";
 
-        $query = $this->db->query("SELECT sku, quantity FROM oc_products");
+        $query = $this->db->query("SELECT sku FROM oc_products");
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
             {
-                $query2 = $this->db->query("SELECT model_code, status, continuity FROM cv_products WHERE model_code = '{$row->sku}' LIMIT 1");
+                $query2 = $this->db->query("SELECT status, continuity FROM cv_products WHERE model_code = '{$row->sku}' LIMIT 1");
                 if($query2->num_rows() == 0)
                 {
                     $csv_file .= '"'.$row->sku.'","0"'."\r\n";
@@ -64,10 +64,11 @@ class Opencartmodel extends CI_Model
 
             // $csv_file .= 'FINISH'."\r\n";
 
-            $file_name = 'ee_stock_export.csv';
+            $file_name = 'cv_stock_export.csv';
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -110,9 +111,49 @@ class Opencartmodel extends CI_Model
         }
     }
 
+    function getCsvNewPrices()
+    {
+        $csv_file = '"SKU","PRICE","CV PRICE"'."\r\n";
+        $query = $this->db->query("SELECT sku, price FROM oc_products");
+
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $query2 = $this->db->query("SELECT model_code, price, product_url FROM cv_products WHERE model_code = '{$row->sku}' AND status = 'In Stock' AND continuity = 'Normal Product' LIMIT 1");
+                if($query2->num_rows() > 0)
+                {
+                    foreach ($query2->result() as $row2)
+                    {
+                        if ($row->price != $row2->price)
+                        {
+                            $csv_file .= '"'.$row->sku.'","'.mysellprice($row2->price).'","'.$row2->price.'"'."\r\n";
+                        }
+                    }
+                }
+            }
+
+            // $csv_file .= 'FINISH'."\r\n";
+
+            $file_name = 'cv_stock_newprices.csv';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+    
+            $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
+            $file = fopen($file_path_name,"w");
+            fwrite($file,trim($csv_file));
+            fclose($file);
+            return $file_name;
+        }
+        else
+        {
+            return 'No Data';
+        }
+    }
+
     function getNewProducts()
     {
-        $query = $this->db->query("SELECT model_code, product_url FROM cv_products");
+        $query = $this->db->query("SELECT product_id, model_code, product_url FROM cv_products WHERE status = 'In Stock' AND continuity = 'Normal Product'");
 
         if ($query->num_rows() > 0)
         {
@@ -123,7 +164,7 @@ class Opencartmodel extends CI_Model
                 $query2 = $this->db->query("SELECT id FROM oc_products WHERE sku = '{$row->model_code}' LIMIT 1");
                 if($query2->num_rows() == 0)
                 {
-                    $result[] = array($row->model_code, $row->product_url);
+                    $result[] = array($row->model_code, $row->product_url, $row->product_id);
                 }
             }
 
@@ -156,6 +197,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -182,6 +224,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -208,6 +251,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -235,6 +279,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -272,6 +317,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -315,6 +361,7 @@ class Opencartmodel extends CI_Model
             $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -326,11 +373,19 @@ class Opencartmodel extends CI_Model
 /**************************************************************************/
 /************************ P R O D U C T ***********************************/
 /**************************************************************************/
-    function csvProdSeoUrlAlias()
+    function csvProdSeoUrlAlias($new='no',$newarray='',$folder='')
     {
         $csv_file = '"URL_ALIAS_ID";"QUERY";"KEYWORD"'."\r\n";
 
-        $query = $this->db->query("SELECT product_id, short_product_name, category_name, subcategory_name FROM cv_products");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id, short_product_name, category_name, subcategory_name FROM cv_products WHERE product_id IN ($newarray)");    
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id, short_product_name, category_name, subcategory_name FROM cv_products");
+        }
+        
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -347,9 +402,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc_product__url_alias.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -358,11 +414,19 @@ class Opencartmodel extends CI_Model
         }
     }
 
-    function csvProdStore()
+    function csvProdStore($new='no',$newarray='',$folder='')
     {
         $csv_file = '"PRODUCT_ID";"STORE_ID"'."\r\n";
 
-        $query = $this->db->query("SELECT product_id FROM cv_products");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id FROM cv_products WHERE product_id IN ($newarray)");   
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id FROM cv_products");
+        }
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -373,9 +437,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product_to_store.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -384,11 +449,19 @@ class Opencartmodel extends CI_Model
         }
     }
 
-    function csvProdLayout()
+    function csvProdLayout($new='no',$newarray='',$folder='')
     {
         $csv_file = '"CATEGORY_ID";"STORE_ID";"LAYOUT_ID"'."\r\n";
 
-        $query = $this->db->query("SELECT product_id FROM cv_products");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id FROM cv_products WHERE product_id IN ($newarray)");
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id FROM cv_products");
+        }
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -399,9 +472,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product_to_layout.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -410,11 +484,19 @@ class Opencartmodel extends CI_Model
         }
     }
 
-    function csvProdTexts()
+    function csvProdTexts($new='no',$newarray='',$folder='')
     {
         $csv_file = '"PRODUCT_ID";"LANGUAGE_ID";"NAME";"DESCRIPTION";"TAG";"META_TITLE";"META_DESCRIPTION";"META_KEYWORD";"SPECIFICATION"'."\r\n";
 
-        $query = $this->db->query("SELECT product_id, full_product_name, overview, specification, meta_keyword, meta_description FROM cv_products");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id, full_product_name, overview, specification, meta_keyword, meta_description FROM cv_products WHERE product_id IN ($newarray)");
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id, full_product_name, overview, specification, meta_keyword, meta_description FROM cv_products");
+        }
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -426,9 +508,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product_description.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -437,18 +520,25 @@ class Opencartmodel extends CI_Model
         }
     }
 
-    function csvProdCommonData()
+    function csvProdCommonData($new='no',$newarray='',$folder='')
     {
         // statuses: In Stock | Out of Stock
         // continuity: Normal Product | Soon Discontinued
         $csv_file = '"PRODUCT_ID";"MODEL";"SKU";"UPC";"EAN";"JAN";"ISBN";"MPN";"LOCATION";"QUANTITY";"STOCK_STATUS_ID";"IMAGE";"MANUFACTURER_ID";"SHIPPING";"PRICE";"POINTS";"TAX_CLASS_ID";"DATE_AVAILABLE";"WEIGHT";"WEIGHT_CLASS_ID";"LENGTH";"WIDTH";"HEIGHT";"LENGTH_CLASS_ID";"SUBTRACT";"MINIMUM";"SORT_ORDER";"STATUS";"VIEWED";"DATE_ADDED";"DATE_MODIFIED";"CHINAVASION_PRICE"'."\r\n";
-                    
-        $query = $this->db->query("SELECT product_id, model_code, ean, main_picture, price, status, continuity FROM cv_products");
+
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id, model_code, ean, main_picture, price, status, continuity FROM cv_products WHERE product_id IN ($newarray)");
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id, model_code, ean, main_picture, price, status, continuity FROM cv_products");
+        }
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
             {
-                
                 // check quantity of products
                 $quantity = 9999;
                 if($row->status == 'Out of Stock')
@@ -466,9 +556,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -477,14 +568,21 @@ class Opencartmodel extends CI_Model
         }
     }
 
-
-    function csvProdImgs()
+    function csvProdImgs($new='no',$newarray='',$folder='')
     {
         // original:    http://cdn.chv.me/images/XWvnAaAn.jpg
         // thumbnail:   http://cdn.chv.me/images/thumbnails/XWvnAaAn.jpg.thumb_70x70.jpg
         $csv_file = '"PRODUCT_IMAGE_ID";"PRODUCT_ID";"IMAGE";"SORT_ORDER"'."\r\n";
 
-        $query = $this->db->query("SELECT prod_id, img FROM cv_products_imgs ORDER BY prod_id");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT prod_id, img FROM cv_products_imgs WHERE prod_id IN ($newarray) ORDER BY prod_id");
+        }
+        else
+        {
+            $query = $this->db->query("SELECT prod_id, img FROM cv_products_imgs ORDER BY prod_id");
+        }
+
         if ($query->num_rows() > 0)
         {
             $oldId = ''; // check if previous ID not equal current ID
@@ -506,9 +604,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product_image.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);
@@ -517,11 +616,19 @@ class Opencartmodel extends CI_Model
         }
     }
 
-    function csvProdCat()
+    function csvProdCat($new='no',$newarray='',$folder='')
     {
         $csv_file = '"PRODUCT_ID";CATEGORY_ID"'."\r\n";
 
-        $query = $this->db->query("SELECT product_id, category_name, subcategory_name FROM cv_products");
+        if($new=='yes')
+        {
+            $query = $this->db->query("SELECT product_id, category_name, subcategory_name FROM cv_products WHERE product_id IN ($newarray)");
+        }
+        else
+        {
+            $query = $this->db->query("SELECT product_id, category_name, subcategory_name FROM cv_products");
+        }
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -550,9 +657,10 @@ class Opencartmodel extends CI_Model
             // $csv_file .= 'FINISH'."\r\n";
 
             $file_name = 'oc__product_to_category.csv';
-            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart\/';
+            $file_path = $_SERVER["DOCUMENT_ROOT"].'/upload/opencart/'.$folder;
     
             $file_path_name = $file_path . $file_name;
+            array_map("unlink", glob($_SERVER["DOCUMENT_ROOT"]."/upload/opencart/*.csv"));
             $file = fopen($file_path_name,"w");
             fwrite($file,trim($csv_file));
             fclose($file);

@@ -4,7 +4,8 @@
     <div class="row">
       <div class="col-md-12">
         <h4 class="page-head-line">Get Images</h4>
-        <p>save product main image and additional images right to your desctop</p>
+        <p>save product MAIN IMAGE and ADDITIONAL IMAGES right to your <strong>desctop</strong>
+        <br /><small>see <a href="<?=base_url();?>faq" title="FAQ">FAQ</a> cause you should set up PATH</small></p>
       </div>
     </div>
 

@@ -66,20 +66,19 @@
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
-		ini_set('display_errors', 1);
+		error_reporting(E_ALL);
+		ini_set('display_errors', 'on');
 	break;
-
 	case 'testing':
 	case 'production':
-		ini_set('display_errors', 0);
+		ini_set('display_errors','off');
 		if (version_compare(PHP_VERSION, '5.3', '>='))
 		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+			error_reporting( 0 );
 		}
 		else
 		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+			error_reporting( 0 );
 		}
 	break;
 

@@ -86,6 +86,8 @@ class Opencartcontroller extends CI_Controller
 
 		$data['result'] = $this->Opencartmodel->getNewPrices();
 
+		$data['downloadcsv'] = $this->Opencartmodel->getCsvNewPrices();
+
 		$this->load->view('common/header', $data);
 		$this->load->view('common/topmenu');
 		$this->load->view('opencart/new_prices');
@@ -97,6 +99,27 @@ class Opencartcontroller extends CI_Controller
 		$data['metadescription'] = $data['metatitle'] = "Check New Products";
 
 		$data['result'] = $this->Opencartmodel->getNewProducts();
+	
+		if(is_array($data['result']))
+		{
+			$newArray = '';
+			foreach ($data['result'] as $value)
+			{
+				$newArray .= $value[2].",";
+			}
+			
+			$newArray = trim($newArray, ",");
+			$folder = 'new/';
+
+			$this->Opencartmodel->csvProdSeoUrlAlias($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdStore($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdLayout($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdTexts($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdCommonData($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdImgs($new='yes',$newArray,$folder);
+			$this->Opencartmodel->csvProdCat($new='yes',$newArray,$folder);	
+		}
+		
 
 		$this->load->view('common/header', $data);
 		$this->load->view('common/topmenu');

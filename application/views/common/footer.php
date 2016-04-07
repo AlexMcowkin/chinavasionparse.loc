@@ -13,6 +13,7 @@
         </div>
     </div>
 </footer>
+<p id="back-top"><a href="#top" title="TOP">TOP</a></p>
 <script src="<?=base_url();?>js/jquery-1.11.1.js"></script>
 <script src="<?=base_url();?>js/bootstrap.js"></script>
 <script src="<?=base_url();?>js/script.js"></script>

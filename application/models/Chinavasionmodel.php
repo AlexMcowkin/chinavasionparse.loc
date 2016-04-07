@@ -141,6 +141,7 @@ class Chinavasionmodel extends CI_Model
                     'specification'=> $value['specification'],
                     'status' => $value['status'],
                     'continuity' => $value['continuity'],
+                    'parse_date' => date('d-m-Y')
                 );
 
                 $_countAdditionlImages = count($value['additional_images']);
@@ -401,69 +402,86 @@ class Chinavasionmodel extends CI_Model
 
     function parseImages($imgurl)
     {
-        include('php/simple_html_dom.php');
-        if (!is_dir(SAVE_IMAGES_PATH)) {return 'PLEASE: setup SAVE_IMAGES_PATH path to desctop in application\config\constants.php';}
-
-        $link = str_replace("http://", "https://", trim($imgurl));
-        $lin_arr = array();
-        $kk = 0;
-        $q = 1;
-
-        $curl = curl_init();
-        curl_setopt($curl,CURLOPT_URL,$link);
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5'); // set user agent
-        $out = curl_exec($curl);
-
-        $html = str_get_html($out);
-
-        foreach($html->find('h1[class="fn"]') as $h1t)
+        $imgurl = trim($imgurl);
+        if (filter_var($imgurl, FILTER_VALIDATE_URL) !== FALSE)
         {
-            //echo $h1t->innertext;
-            $title = seofromname($h1t->innertext); // this function from 'chinavasion' helper
-        }
+            include('php/simple_html_dom.php');
+            if (!is_dir(SAVE_IMAGES_PATH)) {return 'PLEASE: setup SAVE_IMAGES_PATH path to your desctop in application\config\constants.php';}
 
-        $filename = SAVE_IMAGES_PATH.'\gallery\\'.$title;
-        // if we have such folder on desctop so we skip it
-        if (file_exists($filename)) 
-        {
-            curl_close($curl); // clean content
-            return 'File: '.$title.' already exists at Your DESKTOP';
+            $link = str_replace("http://", "https://", trim($imgurl));
+            $lin_arr = array();
+            $kk = 0;
+            $q = 1;
+
+            $curl = curl_init();
+            curl_setopt($curl,CURLOPT_URL,$link);
+            curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5'); // set user agent
+            $out = curl_exec($curl);
+
+            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if($httpCode == 200)
+            {
+                $html = str_get_html($out);
+
+                foreach($html->find('h1[class="fn"]') as $h1t)
+                {
+                    //echo $h1t->innertext;
+                    $title = seofromname($h1t->innertext); // this function from 'chinavasion' helper
+                }
+
+                $filename = SAVE_IMAGES_PATH.'\gallery\\'.$title;
+                // if we have such folder on desctop so we skip it
+                if (file_exists($filename)) 
+                {
+                    curl_close($curl); // clean content
+                    return 'File: '.$title.' already exists at Your DESKTOP';
+                }
+                else
+                {
+                    // create folder on the desktop
+                    mkdir(SAVE_IMAGES_PATH.'\\'.$title);
+                              
+                    foreach($html->find('#xxyts img') as $element)
+                    {
+                        $main_img_url = "http:$element->src";
+                        $ext = pathinfo($main_img_url); // get file data
+                        $extension = $ext['extension']; // get file extension
+                        $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // set path where will save image
+                        file_put_contents($path, file_get_contents($main_img_url)); // download image and save it
+                    }
+                    
+                    // find & save ADDITIONAL images
+                    $i = 1;
+                    foreach($html->find('#xys img') as $element2)
+                    {
+                        $add_img_url = "http:$element2->src";
+                        $add_img_url = str_replace('.thumb_70x70.jpg','',$add_img_url);
+                        $add_img_url = str_replace('.thumb_140x140.jpg','',$add_img_url);
+                        $add_img_url = str_replace('images/thumbnails/','images/',$add_img_url);
+
+                        $ext2 = pathinfo($add_img_url); // get file data
+                        $extension2 = $ext2['extension']; // get file extension
+                        $path2 = SAVE_IMAGES_PATH.'/'.$title.'/'.$i.'.'.$extension2; // set path where will save image
+                        file_put_contents($path2, file_get_contents($add_img_url)); // download image and save it
+                        $i++;
+                    }
+                    
+                    $gallery = htmlentities($title);
+                    curl_close($curl); // clean content
+                    return $gallery;
+                }
+            }
+            else
+            {
+                return FALSE;
+            }
         }
         else
         {
-            // create folder on the desktop
-            mkdir(SAVE_IMAGES_PATH.'\\'.$title);
-                      
-            foreach($html->find('#xxyts img') as $element)
-            {
-                $main_img_url = "http:$element->src";
-                $ext = pathinfo($main_img_url); // get file data
-                $extension = $ext['extension']; // get file extension
-                $path = SAVE_IMAGES_PATH.'/'.$title.'.'.$extension; // set path where will save image
-                file_put_contents($path, file_get_contents($main_img_url)); // download image and save it
-            }
-            
-            // find & save ADDITIONAL images
-            $i = 1;
-            foreach($html->find('#xys img') as $element2)
-            {
-                $add_img_url = "http:$element2->src";
-                $add_img_url = str_replace('.thumb_70x70.jpg','',$add_img_url);
-                $add_img_url = str_replace('.thumb_140x140.jpg','',$add_img_url);
-                $add_img_url = str_replace('images/thumbnails/','images/',$add_img_url);
-
-                $ext2 = pathinfo($add_img_url); // get file data
-                $extension2 = $ext2['extension']; // get file extension
-                $path2 = SAVE_IMAGES_PATH.'/'.$title.'/'.$i.'.'.$extension2; // set path where will save image
-                file_put_contents($path2, file_get_contents($add_img_url)); // download image and save it
-                $i++;
-            }
-            
-            $gallery = htmlentities($title);
-            curl_close($curl); // clean content
-            return $gallery;
+            return FALSE;
         }
     }
 

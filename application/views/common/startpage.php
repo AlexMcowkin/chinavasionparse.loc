@@ -11,7 +11,11 @@
       <div class="col-md-12">
         <div class="jumbotron">
           <p>This parser has been specially written for tracking product flow for CMS OpenCart 2.x</p>
-          <p>For any modification of the parser please contact me by email mail@makovkin.info</p>
+          <p>For any modification of the parser please contact me by email
+            <script type="text/javascript">
+                    emailE = ('mail' + '@' + 'makovkin.info')
+                    document.write('<a href="mailto:' + emailE + '">' + emailE + '</a>')
+            </script></p>
         </div>
       </div>
     </div>
