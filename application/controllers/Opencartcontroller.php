@@ -111,13 +111,16 @@ class Opencartcontroller extends CI_Controller
 			$newArray = trim($newArray, ",");
 			$folder = 'new/';
 
-			$this->Opencartmodel->csvProdSeoUrlAlias($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdStore($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdLayout($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdTexts($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdCommonData($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdImgs($new='yes',$newArray,$folder);
-			$this->Opencartmodel->csvProdCat($new='yes',$newArray,$folder);	
+			if(!(empty($newArray)))
+			{
+				$this->Opencartmodel->csvProdSeoUrlAlias($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdStore($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdLayout($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdTexts($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdCommonData($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdImgs($new='yes',$newArray,$folder);
+				$this->Opencartmodel->csvProdCat($new='yes',$newArray,$folder);	
+			}
 		}
 		
 

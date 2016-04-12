@@ -6,7 +6,8 @@
         <h4 class="page-head-line">Chinavasion's Product Details:</h4>
       </div>
     </div>
-
+    
+    <?php if(is_array($result)): ?>
     <div class="row">
       <div class="col-md-12">
 
@@ -99,6 +100,10 @@
                     ?>
                     </td>
                   </tr>
+                  <tr>
+                    <td><a href="<?=base_url();?>parseimg" target="_blank" title="download images">Download images:</a></td>
+                    <td><small><?=$result['product_url']?></small></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -125,9 +130,16 @@
           </div>
         </div>
 
-
       </div>
     </div>
-
+    <?php else: ?>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-danger" role="alert">
+          <?=$result; ?>
+        </div>
+      </div>
+    </div>
+    <?php endif; ?>
   </div>
 </div> 

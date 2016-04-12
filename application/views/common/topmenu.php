@@ -21,9 +21,9 @@
             <div class="col-md-12">
                 <div class="navbar-collapse collapse ">
                     <ul id="menu-top" class="nav navbar-nav navbar-left">
-                        <li><a href="<?=base_url();?>"><span class="icon-home icon-large"></span></a></li>
-                        <li><a href="<?=base_url();?>logout" onclick="return confirm('Are you sure?')" title="logout"><span class="icon-power-off icon-large"></span></a></li>
+                        <li><a href="<?=base_url();?>" title="HOME"><span class="icon-home icon-large"></span></a></li>
                         <li><a href="<?=base_url();?>faq" title="FAQ"><span class="icon-question-sign icon-large"></span></a></li>
+                        <li><a href="<?=base_url();?>logout" onclick="return confirm('Are you sure?')" title="logout"><span class="icon-power-off icon-large"></span></a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PARSING DATA <span class="caret"></span></a>
                             <ul class="dropdown-menu">
